@@ -14,3 +14,9 @@ venv/
 client_secret*.json
 token.json
 *.pem
+
+# Sample data / example output (lives on the samples branch)
+tiktok_sample.mp4
+transcript.txt
+transcript[0-9].txt
+transcripts/
