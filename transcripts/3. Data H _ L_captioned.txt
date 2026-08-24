@@ -1,0 +1,120 @@
+All right, so let's
+Start off with these videos. I wanted to go over this really quickly because we have a really good example of this
+Right here today with news right news dropped at 8.30. We had some crazy bad folder news. I
+Think we had five
+Yeah, we had five news drop at once, which is crazy
+Some of them were bullish, some of them were bearish, so they kind of contradict each other a little bit
+But yeah price ends up doing this and if you're familiar with how I
+Trade and you've watched some of my old videos my old explanations or you might even be
+Familiar with this from another strategy
+It is basically a I
+I call it pretty mechanical. This is also going to be a good example of a rejection lock and when they can be like kind of hard to
+Identify
+so
+Starting off we have what we call a data high and low, okay?
+Now I prefer this I prefer the actual data high and low to be more aggressive more
+Prominent right if you look at this low. It's not really
+That big of a swing if you know what I mean
+I want this to be an actual like swing you see that we put in the little wick here, which yeah, it's fine
+But on the 15 second, this is just uses as an example
+This is you want to see in terms of like a data high or low right?
+Usually big wick for this to be like picture perfect
+But we're going to use this as an example. This is fresh. This is something that you guys are currently looking at right
+That's the best way to learn
+So a data high and low setup is pretty mechanical pretty straight forward
+No move yes away a little bit. They look the exact same. So I
+Can pretty much just use NQ
+It is pretty mechanical
+The first entry trigger
+Or like there's different ways you've got it. This is for like bias mainly and we'll probably
+This on Thursday as well with CPI is they will probably have a wick up and a wick down and
+the model is
+Like this so the first side that we take out we want to get the opposing side
+So in this case when this
+Handle closes that's when we have established a high and a low right which everyone gets taken out first
+We want to target the opposing side now. What would the entry be on this?
+I think it's right in the face
+Rejection block right
+Now let's let's get into
+I
+Mean let's let's let's go through the entry first, right? So the entry would be the candle
+This 834 candle why would this a 34 candle and
+Why would it not be candle the 833 right because what I have marked here is clearly the 32 candle as the reduction block because this is the highest candle right up candle
+Makes the highest high
+Now the reason that I choose the 834 candle is because I'm going to go into replay
+Here we don't have any valid reduction box, right? Yes, we're a wick here. Yes, we took out data high
+But we don't we don't have any confirmation that we're going to flip bearish and take the opposing side
+So what do we have to wait for
+This we have to wait for a bearish close, right? This is on the one minute chart. I'm treading the one minute right now
+It's the one minute data high and low
+We have to wait for this bearish close and then what do we do from here?
+Bet this closed I mark my rejection lock correctly with the volume of balance and everything included right
+Boom
+My limit is there here. You can even just market order right because price is already like one point away from the rejection lock
+So you can market order if you want to because sometimes this moves a little bit too fast for us to actually live in order
+Boom limit there
+Right next candle. What does the next candle do?
+Taps into the rejection lock starts selling off
+Right target the opposing side data low. This is a one to four
+Yeah
+You
+Now
+Is this going to play out every single time? No, but this is a one of those like high probability mechanical setups
+What we have to take into consideration here? I'm going to exit
+Replay mode
+What we have to take into consideration here is
+If we get a super like the actual data the drops this goes for example for CPI and PPI wait no CPI and NFP sorry
+This goes for CPI and NFP if we have some super bullish data some in super bullish inflation data
+and we do this
+Very often what we end up doing is we just trend for the rest of the day
+So that's kind of something we have to pay attention to right now when we use this high
+Our our kind of setup
+We can afford to lose the setup. Yes, it's fine
+But I'm just saying like if we
+Like severely beat expectations so we put in like some insanely bullish
+Fundamentals
+Going short right after those news
+Very often not a very good idea
+That's why I pulled up like forex factor and see like okay some of these are bullish some of these are bearish
+They kind of contradict each other which means that this move isn't necessarily like
+Real or like isn't necessarily like this might just be an algorithmic move
+Because liquidity is getting pulled right before news drops and then market just moves crazy
+That's kind of why this happens
+So that's something to pay attention to right always when news drops look at forex factory
+And you can go if you're like not certain of whether it's bullish or bearish
+It says here greater than forecast is good for currency good for currency means that it's bad for NQ and yes indices
+Because they are like they move like opposites most of them
+So
+In this case greater than forecast is good the good for currency. This is greater than forecast. It's good for the USD
+It's bad for indices right
+et cetera, et cetera, so
+Yeah, that's
+That's a light explanation of of data high and low
+And then obviously what we also have to pay attention to here would be SMTs with the yes, so
+Let's say like this happened last week right where we had the 10 AM key open the 10 AM had news and we
+manipulated down we created SMTs at data low and then we just rally for the rest of the day
+And I wanted to see that data low get swept never did because there was an SMT there
+That's fine. I just don't like trading against data highs and lows. They're kind of like
+Equal highs and lows in terms of like strength and like draw liquidity and all this stuff. So
+yeah
+but um
+Something you guys should pay attention to when news drops data high and low good for bias this plays out very much
+I don't know like the exact percentage that it plays out depends on the news depends on how news drops like I just showed you here
+So um
+Yeah
+I don't think of
+What else I should add here
+Yeah, so if for CPI and NFP like I just mentioned
+It might be a better idea to use like a five minute entry trigger because you want like
+Stronger confirmation right, but then what you could do is for CPI and NFP he used five minute entry triggers
+And they're like huge huge like this
+We delete this
+We created rejection block and it's huge like this, right? We just take like a one minute entry trigger out of that five and entry trigger
+All right, this is all gonna be more thoroughly explained
+But I got wanted to give you guys an introduction on the data high and low setup and how I trade them specifically. So
+Yes
+Yeah, I think that about covers it
+so
+Gonna start pumping out more videos almost done with all the one-to-ones
+Wanted to get that out of the way first so that I can kind of like gauge where you guys struggle the most with
+And I think I got a pretty good idea. So looking forward to this

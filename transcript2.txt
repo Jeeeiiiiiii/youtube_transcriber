@@ -1,0 +1,789 @@
+Manish: So yeah, let's start with your introduction, and then we'll come up with
+        the interview process.
+
+Sai Krishna: Yeah, sure, Manish. Firstly, thanks for giving this opportunity to
+             me. Okay, let me start. I'm Sai Krishna. I've been working at TCS
+             for over 3 years as a DevOps engineer. Currently, I'm working on
+             the Lloyds Banking Group project. Here we're using GCP — Google
+             Cloud Platform — as our cloud provider. Coming to my team details,
+             we are a team of six members. We usually get requests from the
+             developers via Jira tickets, and those include things like
+             troubleshooting pipeline failures, pod failures, URLs not working,
+             and apart from that we usually get requests like creation of
+             resources using Terraform and end-to-end setup of microservices. As
+             part of the DevOps team, we're usually involved in deployments
+             twice a week. Coming to my skill set — I have good hands-on
+             experience with Docker, Kubernetes, Terraform, Jenkins, Git, and a
+             little bit on Linux and Bash as well. On the cloud side, I have
+             experience with AWS and GCP. Yeah, that's about me.
+
+Manish: Okay, thanks. If I talk about AWS, what all AWS services have you used?
+
+Sai Krishna: Yeah, actually EC2 instances and S3. I know the complete VPC part,
+             and apart from that I have experience with CloudWatch, Elastic
+             Beanstalk, CodePipeline, and some routing part — Route 53. Yeah,
+             those are the things I know. Coming to databases, we mostly use GCP
+             only — BigQuery, Spanner, those kinds of things we use in GCP.
+
+Manish: Yeah, okay. So let's start with EC2 first. In EC2, I want to make my
+        server a private one. What kind of configuration can I do to make my
+        server private?
+
+Sai Krishna: Yeah, actually it starts with the VPC thing, Manish. First we need
+             to create our instance in a private subnet — then it'll
+             automatically be inside a private server. The thing you need to do
+             to make it private is you need to connect the route tables of your
+             private subnet to the NAT gateway — then it'll be treated as a
+             private server.
+
+Manish: Okay. And if I do not attach a NAT gateway to my route table, will it be
+        private or not?
+
+Sai Krishna: Actually, in the route table it has to be attached to the NAT
+             gateway. Otherwise, if you attach it to an internet gateway, then
+             it won't be treated as a private server.
+
+Manish: Okay. So what is the use of the NAT gateway here?
+
+Sai Krishna: Yeah, actually it's the thing that lets you communicate with the
+             outside world. Requests coming from the internet hit your public
+             server, and from the public server to the private server, the NAT
+             gateway is the intermediary that allows communication between the
+             private and public sides.
+
+Manish: Okay. So if I have to create a private subnet — same question — why do I
+        require NAT? I can create a private subnet without NAT as well.
+
+Sai Krishna: Yeah, we can create public and private subnets — whatever we want.
+             But the purpose of creating a private one is to not allow traffic
+             into the private subnet directly.
+
+Manish: So with NAT only, can we go into the private subnet? That's what NAT is
+        used for — internet traffic. I don't want internet traffic at all, so
+        why would I keep NAT?
+
+Sai Krishna: If you don't want the private subnet or private server to
+             communicate with the outside world, then a NAT gateway isn't
+             required. I didn't realize you were asking about that use case.
+             Correct — if I don't have to communicate, if I just have to keep a
+             database there, then I'll just go with the private subnet only.
+             Same with a Lambda function — I'd go with a private subnet. NAT is
+             required only when you need outbound communication.
+
+Manish: Correct.
+
+Sai Krishna: Yeah.
+
+Manish: Okay. Let's talk about EC2 only. I have an EC2 that has been created in
+        a public subnet, an internet gateway is attached, and all connectivity
+        is there. Now I want to make this public server a private one, and I
+        don't want to touch its route table. How can I do that?
+
+Sai Krishna: Once it's treated as a public server, the thing we need to do to
+             make it private is… yeah, I'm not sure of it actually. Once it's
+             treated as public, it's completely treated as a public server. To
+             make it private, we'd need to change the route table — I think
+             that's the only way immediately.
+
+Manish: Okay. If I have to assign any — just suppose I have a web application
+        hosted on an EC2 instance, and this web application is being fetched
+        from abc.com from the internet side. That's my DNS for reaching the
+        application. There are end users for this application. Now this server
+        has some issue and it's going down, or it has crashed — some OS issue or
+        something similar. Now I have to route the traffic to a second server.
+        You can think of it as a backup kind of thing where I'll be routing the
+        traffic to a second server. The server number two's domain will remain
+        the same, because for the user there's no logic in changing the domain —
+        the request should be routed. That's your back-end purpose. So how will
+        you switch this server from the first to the second, keeping your IP
+        address and your DNS the same? Your DNS should route to the same IP
+        address.
+
+Sai Krishna: Yeah. Actually, for this we can go with auto scaling groups. We can
+             create multiple nodes or servers inside our auto scaling group.
+
+Manish: I'm keeping only one server. It's a small application — you can think of
+        one EC2 instance with my application at abc.com, and abc.com is routing
+        to the IP address, say 12.13.15.17. That's the IP address on which
+        abc.com is getting resolved. Now the first EC2 instance has some issue,
+        and this IP address should now route to the second server. abc.com will
+        remain the same — the IP address on which my DNS was getting resolved
+        should also be the same — but it should now route to the second server.
+
+Sai Krishna: Okay, so the server is destroyed but you want the same IP address
+             to move to the next server.
+
+Manish: Yes.
+
+Sai Krishna: Yeah, not sure of this, Manish.
+
+Manish: Elastic IP address — EIP. Have you heard of it?
+
+Sai Krishna: Yeah, yeah, yeah.
+
+Manish: It gives the same IP address for your server. You can disassociate and
+        associate the same IP address to another server, and your DNS will again
+        route to the same IP, and that IP will be attached to the second server.
+        So your traffic will automatically get routed.
+
+Sai Krishna: Right, okay. Thanks.
+
+Manish: Okay. You mentioned auto scaling, so let's talk about that as well. What
+        are the parameters based on which you can create this auto scaling
+        group?
+
+Sai Krishna: Actually, for creating any auto scaling group or anything that
+             needs to be created automatically, we have to create target groups
+             for it — meaning what instances or servers need to be part of the
+             auto scaling group. So if any server goes down or crashes due to
+             heavy traffic, then automatically, with the same specifications, a
+             new instance will be created in that auto scaling group, and it'll
+             have the same load-balancing capabilities as well.
+
+Manish: Yeah, that's true. But what's the parameter based on which you'll scale?
+        There should be some parameter — some factor — based on which scaling
+        happens.
+
+Sai Krishna: It's like a template thing.
+
+Manish: No, that's the launch template. One of the parameters, if I talk about
+        it, is CPU utilization. So whenever CPU utilization goes more than 70%
+        or 60%, a number of servers should be launched. What are the other
+        parameters based on which we can create this kind of scaling?
+
+Sai Krishna: Actually, yeah, as you mentioned CPU utilization is one of them —
+             if it crosses a particular percentage, a new instance has to be
+             created. Other parameters are based on traffic. We can use things
+             like node affinity or taint tolerations on our nodes. If any pod is
+             getting all the requests — only one pod is getting hit — we can use
+             load balancing and shift traffic to all the servers.
+
+Manish: What are the different kinds of policies we can create in auto scaling?
+
+Sai Krishna: Not sure.
+
+Manish: Okay. Have you heard about dynamic scaling policies?
+
+Sai Krishna: Uh, no.
+
+Manish: Okay, no issue. If I talk about S3 service, are buckets regional or
+        global?
+
+Sai Krishna: Yeah, it's regional only.
+
+Manish: Okay. S3 is regional — that's what you're saying, correct? S3 is a
+        regional service. Correct. Okay. If I create a bucket in AWS account A,
+        and there's another AWS account which is the common AWS account — or the
+        shared AWS account, that's the naming convention we pass. This AWS
+        account is specifically used for storing data for those customers for
+        whom our agreement has ended. So there was a customer for 5 years, and
+        after 5 years their agreement ended. According to our company's
+        organization policy, we have to retain the data for a year, and after
+        that we can delete it. So I have to move all the S3 data from AWS
+        account A to this shared AWS account. How can I do that?
+
+Sai Krishna: For these types of things, we can use lifecycle rules. For a
+             particular period of time, we can keep the storage class as, say,
+             Standard, and after the use case we can move it to another bucket
+             using lifecycle rules. In Terraform we'd use lifecycle rules like
+             transition and expiration. Using that, after our use case, it'll be
+             automatically moved, or if we need to delete it, it'll be deleted
+             automatically.
+
+Manish: So what is the use of a replication rule?
+
+Sai Krishna: Replication?
+
+Manish: Yes.
+
+Sai Krishna: Actually, replication is — once we connect any two buckets in two
+             different accounts, if we add anything to one bucket, the same
+             thing will be added to the other bucket as well. But if we delete
+             an object in one bucket, that file won't be deleted from the other
+             bucket.
+
+Manish: Can we achieve the same thing using the replication rule or the
+        lifecycle rule? The question I asked — moving data from one S3 bucket to
+        another S3 bucket — should I use a lifecycle rule or a replication rule
+        for that?
+
+Sai Krishna: Replication rule.
+
+Manish: Okay. Have you worked with EKS as well?
+
+Sai Krishna: Yeah, actually in our project we use GKE, but yeah, I'm good with
+             GKE.
+
+Manish: Okay. What is a permission boundary in IAM?
+
+Sai Krishna: A permission boundary is like a limitation of access. For any user
+             or service account, we keep a boundary — meaning they're allowed to
+             do only this sort of action. Apart from that, we don't allow the
+             user to do any other actions.
+
+Manish: Okay. So the same thing can be controlled by a policy as well, correct?
+        There's a user, and for that user I've attached the Amazon VPC full
+        access policy. So what is the role of a permission boundary here?
+
+Sai Krishna: If you want to give all the things related to VPC, you can give an
+             admin-related role.
+
+Manish: Okay. What is the default route in your main route table?
+
+Sai Krishna: Not sure.
+
+Manish: Okay. Just suppose I have an EC2 instance in AWS account A where I've
+        hosted an application, and there's AWS account B where we're keeping all
+        the databases. Now my application has to connect with the database so
+        that it can read and write data. How will you ensure that your
+        application establishes communication with your databases?
+
+Sai Krishna: Yeah, actually, whatever microservice you're using for your
+             application — to connect it to the database, we actually use
+             database-related roles for that service account, so it'll
+             automatically be connected to the database. But this case will be
+             possible only if the account is the same — the microservice and the
+             database need to be in the same account.
+
+Manish: But my question is, the database and the microservice are in different
+        accounts, right?
+
+Sai Krishna: Yes. For this, for integration of the two accounts, we can use
+             peering — there's connection peering or something like that.
+
+Manish: Yes, go ahead.
+
+Sai Krishna: For connecting two VPCs, there's something like "peering
+             connections." I'm not sure exactly —
+
+Manish: Yes, it's VPC peering. Are you aware of how to configure VPC peering?
+
+Sai Krishna: Yeah, actually, the CIDR of project one — the AWS account one's
+             CIDR — needs to be mentioned in AWS account two, and AWS account
+             two's CIDR needs to be mentioned in AWS account one. That way the
+             communication will be established.
+
+Manish: Okay. Are you aware of Transit Gateway as well?
+
+Sai Krishna: Transit Gateway, yes.
+
+Manish: It's okay. Just suppose I have a load balancer routing traffic between a
+        number of servers, and I've created multiple target groups. But out of
+        these multiple target groups, I see that one of my target groups is
+        unhealthy. What can be the possible causes for your target group to be
+        unhealthy, and how will you resolve it?
+
+Sai Krishna: Yeah, the reason for going unhealthy is like — the probes aren't
+             ready. We mention probes as health checks on our pods or nodes. If
+             any probe is failing because of readiness or similar issues, we
+             usually get "no healthy upstreams." For these types of things,
+             first we need to go to the logs and check — what is the main issue,
+             what is causing this issue?
+
+Manish: I'm talking about the target group only. I'm not in the K8s area right
+        now — I'm focused on AWS. I'm talking about where I've created a load
+        balancer. This load balancer has five target groups, and these target
+        groups have their servers attached. Now I see one of the target groups
+        is unhealthy. It's just an application hosted on EC2, and this
+        application is getting routed through a load balancer to different EC2
+        machines. There's no pod involvement, and the target group is unhealthy.
+
+Sai Krishna: Yeah, the possible reasons might be the CPU utilization or memory
+             utilization of that node reaching max. That might be one reason.
+             Another possible reason is heavy load on those node servers.
+
+Manish: Okay. So what is the architecture of Kubernetes?
+
+Sai Krishna: Yeah, the architecture maintains a master and workers (slaves). The
+             master contains etcd, API server, scheduler, and controller
+             manager. Coming to the worker nodes, which contain kubelet,
+             kube-proxy, and cadvisor or container runtime — all those things
+             are on the worker nodes.
+
+Manish: Okay, got it. I've mentioned my desired number of pods as five, and I
+        see that only three pods are running in the current situation. How will
+        this be fixed, and what kind of action will happen within Kubernetes?
+
+Sai Krishna: Yeah, actually it depends on the traffic you're getting to your
+             application. If you're only getting the capacity for three pods,
+             Kubernetes automatically creates only three pods. If the load
+             increases —
+
+Manish: The desired is five.
+
+Sai Krishna: The desired is five —
+
+Manish: Okay, desired is five, but it's keeping only three active.
+
+Sai Krishna: Yes.
+
+Manish: Current situation: there are only three pods, but my desired
+        configuration was five. So it should keep five pods. Only three are
+        running. What kind of action will Kubernetes take? How will the other
+        components communicate with each other?
+
+Sai Krishna: It matches the current state with the desired one, correct?
+
+Manish: Correct. But I see the current state only has three pods, but my desired
+        was five. So how will the Kubernetes components talk to each other, and
+        what will the flow be?
+
+Sai Krishna: Yeah, actually there are three things — minimum, desired, and
+             maximum, correct? If you keep minimum as three, then automatically
+             it'll create three. But as you said, you mentioned the desired as
+             five, so it has to create five as well. That depends on — one of
+             the reasons I'm guessing might be that you've given CPU and memory
+             limits to your namespace. So for that namespace, the number of pods
+             Kubernetes is able to create is only three. While trying to create
+             the fourth, it's getting an error like "out of memory" or "no
+             memory left." That's one issue.
+
+Manish: Okay. Let's come to the second question. I run "kubectl apply -f
+        deployment" — that command — correct? To create your deployment and
+        create your pods, based on the deployment configuration you've passed.
+        What will be the flow of this particular command? How will it work?
+
+Sai Krishna: Yeah. Whenever you're trying to create a new thing, after you run
+             "kubectl apply", first it'll go to the API server of our Kubernetes
+             cluster. Then the API server receives whether it's a creation,
+             deletion, or update of your resource. Then it'll check with the
+             scheduler, and the scheduler will get the details from the kubelet.
+             The scheduler will decide whether to create or update, and the node
+             controller manager or the pod controller manager will check the
+             status from the API server. Our etcd will store the input — you
+             give "kubectl apply", right, that input will be stored in etcd.
+             Finally, after getting the detailed information from the scheduler
+             — meaning it has to be created in a node, the pod has to be created
+             in the node — the API server will create it.
+
+Manish: Okay. So there are two kinds of nodes — one node with t3.medium, and
+        other nodes having capacity of c5.xlarge. I'm running 15 microservices.
+        Out of all these 15, there are two microservices which are heavy — you
+        can think of them as the login page and homepage, which should get
+        served every time someone hits my application URL. I want these two
+        microservice pods to be scheduled only on the c5.xlarge nodes. How will
+        I ensure this?
+
+Sai Krishna: Yeah, for this type we can taint that node. The c5 node can be
+             tainted, and the pod that's going to be created can have the
+             matching toleration, so it can be created in that node itself. For
+             this we can use node affinity and node selector — all these things
+             come under this. The pod you're going to schedule needs to go to a
+             particular node. So selecting a node via node affinity and
+             taint/toleration.
+
+Manish: Can we have other microservice pods on that particular node which is
+        marked as c5.xlarge?
+
+Sai Krishna: Yeah, if a node is tainted, then the pod needs to match with the
+             tolerations — otherwise, no pod can be scheduled on that node.
+
+Manish: Okay. How do you do a cluster upgrade?
+
+Sai Krishna: Yeah, actually we use surge upgrades for our cluster upgrades. A
+             surge upgrade — suppose we're maintaining six nodes in production —
+             we set the "max surge" and "max unavailable" values. If the surge
+             is two, it means it will create two new nodes, drain and cordon two
+             old nodes, move all the pods from the old nodes to the newly
+             created nodes, and then delete the old nodes. At the same time we
+             keep a max unavailable —
+
+Manish: We ensure that whatever new pods are launched go to the same nodes,
+        correct? There are six nodes, as you mentioned — out of the six, you did
+        a drain on two nodes. How will Kubernetes know that the pods which have
+        been evicted from these nodes will get scheduled to the newer nodes
+        only, and not to the existing nodes?
+
+Sai Krishna: Yeah, actually the new surge nodes are created outside those two.
+             It'll take the configurations of the two nodes being drained, and
+             those pods from the old nodes will move to the new ones, because
+             they're configured with the same configurations of the old nodes.
+
+Manish: Okay, so there's no toleration as of now, correct? Just suppose you had
+        six nodes and all pods were running across the six. When you're doing a
+        cluster upgrade — according to what you're explaining — out of these six
+        nodes, you've drained two and two new nodes have been launched.
+        Altogether you have eight nodes: four existing, two new, and two that
+        have been drained. How will Kubernetes know that the pods which have
+        been drained from these two existing nodes will come to these new nodes
+        only and not to the four nodes which were running before? How will
+        Kubernetes know?
+
+Sai Krishna: Yeah, it's the same question you asked before. It's like — the new
+             nodes will be created from the two random nodes, and the same
+             configurations will be attached to the two new surge nodes. So
+             automatically we reschedule — meaning we schedule the pods,
+             services, or things available in the drained nodes. They have to be
+             moved to this newly created surge node only, or else they'll go
+             wherever capacity is available. I'm not sure of it.
+
+Manish: Okay, no issue. What is the difference between CloudWatch alarms and
+        CloudWatch events?
+
+Sai Krishna: Yeah, actually CloudWatch is for monitoring. Coming to alarms and
+             events — an alarm is when, for example, if CPU utilization
+             increases beyond a threshold, we set an alarm because we need to
+             get a notification. So alarms notify like that. Coming to events,
+             an event is a state change — from false to true, or true to false.
+             For example, if any node or pod crashes, then we need to be
+             notified. Apart from that, let me give an example from outside
+             Kubernetes — an event could be: if any object is loaded into a
+             bucket, then this pipeline needs to be triggered automatically.
+
+Manish: Okay, got it. If I talk about Kubernetes once again — I have a namespace
+        called A and another namespace called B, or you can think of them as
+        production and staging. I have to ensure that all the pods from
+        production and staging communicate with each other. Ideally it doesn't
+        happen, but if I have to communicate between one namespace and another
+        namespace, what can I do? You can think of it as — rather than
+        production and staging, in one namespace I'm keeping all the secrets,
+        and in another namespace my application is running with all the
+        microservices. These pods need to get the details of the secrets. I have
+        to establish communication between these two namespaces.
+
+Sai Krishna: Yeah, actually for connecting microservices we can use labels and
+             selectors. But if they're in different namespaces —
+
+Manish: Okay, within the same namespace there are five microservices. How does
+        one microservice or the pods running for one service communicate with
+        another microservice's pods? They're all running independently — pod 1,
+        pod 2, pod 5. How does this pod know that it has to communicate with
+        that second pod or third pod?
+
+Sai Krishna: Yeah, we can use the same type of labels for the application, and
+             the same selector can be used for getting communication from one
+             pod to another pod.
+
+Manish: Okay. If I have to restrict communication between these two namespaces —
+        production and staging — what can I do?
+
+Sai Krishna: Restrict? By default, it won't have any communication, so you can
+             keep it like that.
+
+Manish: Actually, by default, across all namespaces, all pods can communicate
+        with each other. That's why my second question was there. Okay, so just
+        suppose that I have a Docker image out of which my container is running.
+        Now I have to delete this image. Can I do that while my container is
+        running from that image?
+
+Sai Krishna: No. While the container is running, it's not possible. You need to
+             stop the container, and then only you can delete the image.
+
+Manish: It's okay. What kinds of stages have you written for your Jenkins
+        pipeline?
+
+Sai Krishna: Yeah, actually we use a multibranch pipeline for this. Coming to
+             the stages involved in the Jenkins pipeline — first, getting the
+             code from GitHub. For scanning purposes, we use SonarQube. The
+             build stage is where we create images using Docker, and for
+             scanning the Docker image we use Trivy. For deployment, we use
+             Kubernetes with Helm. Apart from that, for monitoring, we use
+             Dynatrace. Those are the stages. Let me define it in a simple way —
+             the first stage is getting the code, the second stage is security
+             scanning of the code, the third is building with Docker, and the
+             next is deploying to Kubernetes using manifest files.
+
+Manish: Okay. Have you worked with Helm templates as well?
+
+Sai Krishna: Yes.
+
+Manish: Okay. What is Helm?
+
+Sai Krishna: Yeah, Helm is a package manager for Kubernetes. It contains all the
+             YAML files required to deploy an application in Kubernetes —
+             deployment files, service files, and so on. Here, by default, we
+             get all these templates instead of writing them ourselves. That's
+             the use case of Helm.
+
+Manish: Okay. If I talk about Jenkins itself, I have to control the roles and
+        permissions. There are 10 users. Out of the 10 users, I have to give
+        someone admin access, and someone only access to execute the pipeline.
+        How do we control all the roles and permissions within Jenkins itself?
+
+Sai Krishna: Yeah, there's a user management thing in Jenkins. We create users
+             and grant roles accordingly. As part of the DevOps team, I need
+             admin-level access — so I request the administrator to grant me
+             admin, or deletion, or console output view, or building pipelines.
+             He'll sort out all those things and grant me the access, and then
+             I'll be able to do things in Jenkins.
+
+Manish: Okay. Likewise, for the development team and the testing team, there
+        will be different roles.
+
+Sai Krishna: Correct.
+
+Manish: If I have two modules — VPC and EC2 — and I have to pass the VPC ID at
+        runtime to the EC2 module, what can I do?
+
+Sai Krishna: For this you can use — the ID syntax like
+             "resource_type.resource_name.id". You can use that in the EC2
+             instance while creating it, so it'll take that VPC ID and pass it
+             as an input to EC2, so it'll be created under that VPC itself.
+
+Manish: Yeah, I'm talking about module outputs. There's a main.tf where I'm
+        calling the VPC module, then I'm calling the EC2 module. While calling
+        the EC2 module, I have to pass the VPC ID. What syntax will I use to
+        pass the VPC ID that's being created at the top of the same file?
+
+Sai Krishna: Okay. You're creating them at the same time, or is the VPC already
+             there?
+
+Manish: At the same time. There's a main.tf in which there's a module call for
+        VPC and then a second module call for EC2 creation. I'll run "terraform
+        apply" and main.tf will be called. The VPC will be created, and after
+        that, the EC2 needs to be created — and I have to pass the VPC ID at the
+        same time.
+
+Sai Krishna: Yeah, actually for this we can use the "depends_on" dependency —
+             meaning the EC2 instance has to be created only after the VPC is
+             created. At the same time, you can mention the label I mentioned:
+             "resource_type.resource_name.id". That can be inserted into the EC2
+             module. So once the VPC is created, the EC2 instance creation will
+             be started.
+
+Manish: Okay. You mentioned Dynatrace earlier — I think you've used Dynatrace as
+        an APM tool for monitoring.
+
+Sai Krishna: Yeah.
+
+Manish: What all setup have you done for Dynatrace? How do you configure
+        Dynatrace to monitor the system?
+
+Sai Krishna: Yeah, actually we integrated Dynatrace with our cluster. Agents
+             will be installed in the cluster, and through that, the cluster
+             updates and Dynatrace dashboards — all those things are monitored.
+             We usually get alerts if any production server fails.
+
+Manish: If there's a new customer, and for that customer onboarding I have to
+        deploy Dynatrace — I have to get the data of the new customer into
+        Dynatrace. What kind of setup will we do? How will you go from scratch?
+
+Sai Krishna: Yeah. The configuration from the start: your cluster is there and
+             Dynatrace is installed. Communication between the two will be
+             established using Dynatrace agents.
+
+Manish: So we can install that.
+
+Sai Krishna: Yeah, yeah, go ahead. Using the Dynatrace agent, communication is
+             established, and monitoring can be done.
+
+Manish: Where will this Dynatrace be deployed?
+
+Sai Krishna: In our cluster itself.
+
+Manish: Okay. And how will it be deployed?
+
+Sai Krishna: Yeah, we'll use one of the nodes for Dynatrace integration with the
+             cluster. In that node, all the things will be stored, and it will
+             be communicated to Dynatrace. So Dynatrace will visualize
+             everything from our cluster.
+
+Manish: Will it work as a StatefulSet, a DaemonSet, or as a job? How will it be
+        deployed?
+
+Sai Krishna: As far as I know, it'll be a DaemonSet only — because we get
+             incidents related to DaemonSets: "it failed" or "it upgraded."
+
+Manish: How do we create conditional resources in Terraform?
+
+Sai Krishna: Conditional resources in Terraform, meaning any —
+
+Manish: Yeah, so if a particular flag is yes, my Terraform resource will be
+        created; if that flag is marked as no, it won't be created. That kind of
+        conditioning. Just suppose that your private subnet will be created only
+        if the internet gateway flag is marked as no. If the internet gateway
+        flag is marked as yes, your public subnet will be created. How can you
+        mention that kind of conditioning in Terraform?
+
+Sai Krishna: Not sure. It's like — only if that phase is completed, then this
+             has to expand?
+
+Manish: No. It's like — if that particular flag is yes, then that resource will
+        be called. If I say no, that resource will not be called even though my
+        pipeline is running.
+
+Sai Krishna: Yeah, using parameters in Jenkins we can create —
+
+Manish: Okay. Any major challenges that you have faced while working as a DevOps
+        engineer, and any learning you've achieved out of them?
+
+Sai Krishna: Yeah, usually the challenges are troubleshooting things. We usually
+             get things like "CrashLoopBackOff", "the pod is not running", "the
+             URL is not working", "I'm getting an access error — what to do?"
+             Those kinds of challenges. It includes things like "I'm not able to
+             query" or "I'm getting access denied" or "my pod is not running,
+             even though my pod is running I'm unable to hit the URL — it's not
+             accessible." Those are the issues we face. And since we're already
+             familiar with the microservices and resources we're working with,
+             we know what to do with those things. I'm already familiar with
+             what I'm working on, so it's easy for me to troubleshoot those
+             types of issues.
+
+Manish: What commands do you use to troubleshoot? Just suppose you've got an
+        error on which you see CrashLoopBackOff — how do you get into the
+        troubleshooting part?
+
+Sai Krishna: Yeah, actually it depends on the error. If it's a crash loop, first
+             I'll check the logs of that pod in Kubernetes. If it shows
+             something like "that service account doesn't have enough permission
+             to load data from GCS to BigQuery", I'll check in IAM whether the
+             service account actually has the right permission or not, and I'll
+             troubleshoot that. If it's a code-related issue, I'll let the
+             developer know, he'll fix it and rerun, and I'll rerun the
+             pipeline. If I'm still not sure, I'll describe the pod once and
+             check the logs. And if I'm still not sure, I'll do a redeployment —
+             I'll just restart the thing and it'll work.
+
+Manish: What are all the commands you'll use to restart, to check the logs, to
+        use kubectl?
+
+Sai Krishna: Yeah, first I'll describe the pod using "kubectl describe pod <pod
+             name>". If I don't get anything from that, I'll check the logs
+             using "kubectl logs <pod name>". Even if that doesn't work, I'll
+             just restart using "kubectl rollout restart deployment <deployment
+             name>". Those are the commands I use. Based on the error, the
+             commands will change.
+
+Manish: Okay. Have you worked with shell scripting as well? You mentioned Bash.
+
+Sai Krishna: Yeah, yeah, a little bit only, not much.
+
+Manish: If I have to find out which files are consuming high disk space, how can
+        I write a shell script for that? There's a particular directory with a
+        thousand files — I have to identify which files are taking the most disk
+        space.
+
+Sai Krishna: Okay, generally for getting disk space, we can use the command "df
+             -h", but for a particular folder and all the files that are
+             consuming data — I'm not sure about that. We can check in our file
+             manager, but using a command — I'm not sure.
+
+Manish: Okay. If I talk about persistent volumes — where do these exist in
+        Kubernetes?
+
+Sai Krishna: Yeah, actually it's part of volumes. The persistent volume is for
+             storing data for our pods. A persistent volume can be created from
+             an EBS volume — the cloud volume is integrated with our Kubernetes.
+             Using the PV, it's managed. From the PV we can create a PVC —
+             persistent volume claim — which can be claimed by our pods and
+             services.
+
+Manish: Can a PVC be created dynamically, or is it static?
+
+Sai Krishna: Dynamically — meaning it'll be created only if our pod uses it.
+             Once it's requested, only then will the PVC be created.
+
+Manish: Okay. Just suppose I'm developing application code, and I have to push
+        my code to the GitHub repository. How will you do it?
+
+Sai Krishna: Yeah. If that code is in the local repository —
+
+Manish: Local system, and now you want to push it to the remote repository.
+
+Sai Krishna: For that, after creating the files and writing the code, you need
+             to run "git add" to stage them. Then you commit using "git commit
+             -m 'commit message'". Then you push to the remote repository using
+             "git push".
+
+Manish: Okay. What is the difference between "git pull" and "git fetch"?
+
+Sai Krishna: Yeah, "git pull" is the combination of fetch and merge — it fetches
+             the details and then merges them into our local. "git fetch" just
+             gets the details — it shows what files have changed, that's it.
+
+Manish: Okay. How do we store a state file in Terraform?
+
+Sai Krishna: Yeah, actually after running "terraform apply", the state will be
+             created. The recommended way to keep it safely is to use a remote
+             backend like S3. It'll be stored in S3, and whenever we need it,
+             even if we delete the state file locally, we can get it back from
+             S3.
+
+Manish: Okay. What are provisioners in Terraform?
+
+Sai Krishna: Yeah, provisioners are for doing some action on the local or remote
+             machine. The types of provisioners are local-exec, remote-exec, and
+             file.
+
+Manish: What is the use of a null_resource in Terraform?
+
+Sai Krishna: I'm not sure about that one.
+
+Manish: It's okay. Have you worked with Ansible? What is a pre-hook in Ansible?
+
+Sai Krishna: Actually, Manish, in our project we don't use Ansible. Externally,
+             I learned it, but in the meantime I didn't get a chance to look
+             into it properly, so I need to look into it again. It's a
+             configuration management tool used for doing things on remote
+             servers from our local server. If you have 100 servers, you can do
+             things on all 100 servers at the same time using Ansible. For that,
+             we need to write a playbook and YAML files, but I need to deep-dive
+             into it once again to answer the questions.
+
+Manish: Okay. I see you mentioned Prometheus and Grafana. How have you set up
+        the complete architecture for this? How are you utilizing Prometheus and
+        Grafana?
+
+Sai Krishna: Yeah, actually I personally worked on this — it's not part of our
+             project. The setup includes using Helm repositories that are
+             already available. I integrated that with my pods. I created a KOPS
+             cluster and integrated Prometheus with the KOPS cluster, and later
+             I installed Grafana as well. In the Grafana UI, I integrated it
+             with the Prometheus that I installed. So the complete view of my
+             cluster will be visible in Grafana. Using some dashboard IDs like
+             315 or 6417, you can view whatever you want — by namespace, pods,
+             or other things. Based on the dashboard ID, you can view different
+             things.
+
+Manish: Okay. What do you understand by mutable and immutable in Docker?
+
+Sai Krishna: Docker — mutable and immutable. Mutable means something changeable,
+             and immutable means something we cannot change. Related to Docker,
+             it's based on… meaning for any image, after giving the image name,
+             whether we can change the name or not — something like that, I
+             think.
+
+Manish: Okay, let me come to the question. I have an image tagged as "latest",
+        and I want to change the same image with new code or any configuration
+        I've changed at the code level. I want to update the same image. Can I
+        update the same image?
+
+Sai Krishna: Yeah, it's possible. It'll be created with the same name, but the
+             earlier image will go into a dangling state — meaning untagged.
+             Whatever the image name is — suppose you created an image called X,
+             but you upgraded the code and deployed it with the same image name
+             X — then a new X will be created, but the previous X will move to
+             untagged.
+
+Manish: Okay. On this GitHub repository, I have a branch called master. Out of
+        this master branch, I've created a tag — you can think of a tag 10.0.
+        Now when I've deployed this 10.0, I found that there's a bug. I've
+        created a hot fix, and I want to push the changes into this same tag
+        only. So what kind of strategy do you follow for this hot fix
+        deployment?
+
+Sai Krishna: If I find a bug in the present code, I'll revert that code first
+             and then go with the new code. For reverting, I use "git revert" on
+             the commit.
+
+Manish: It's production code.
+
+Sai Krishna: Okay. You can go to the new or earlier version.
+
+Manish: If I have to deploy the hot fix itself — the question itself is: you
+        have a branch, on that branch you've pushed your code changes, and
+        you've created a tag — I hope you've worked with tags in Git — and this
+        tag is marked as 10.0. Now I've changed my code from 10.0 to 10.0 with a
+        fix. I want to push the changes to this tag only. So can we update the
+        same tag?
+
+Sai Krishna: Yeah, it's possible, Manish. We can squash all the commits and push
+             into that same tag. Whatever changes you made with the new code,
+             you can attach them to the previous commit itself, and that commit
+             has already been tagged with 10.0, so the new code will also get
+             the same 10.0.
+
+Manish: It's okay. Yeah, thanks. Thanks for the interview.
+
+Sai Krishna: Yeah, thanks, Manish.
+

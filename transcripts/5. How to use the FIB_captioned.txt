@@ -1,0 +1,125 @@
+All right, so fib video, I realized there's not an official fib only video.
+I just have it in like breakdowns and stuff.
+So here we go.
+First step obviously to using a fib and like using any other PDRA is to identify bias.
+Where are we going to draw our fib?
+What leg is going to be valid?
+Now, if we look here, we obviously have a downtrend, all right?
+Now is it too early to deem this as a market market model?
+Yes, in hindsight though, this is a reason price action.
+So we do know what is going on.
+Little highs up there on the higher time frame and we have tapped into this daily rejection
+block, right?
+So knowing all this, I got to re-replay now.
+We could start looking for some confirmation to long, right?
+Not crazy.
+So what we see here right off the bat is this one hour close, finally we're getting
+a one hour bullish close after tapping into that daily structure as well on the four
+hour.
+Now, if we scale down to the 15, we can also see we're starting to have some changes
+instead of delivery, we're having 15 minute rejection blocks, etc.
+So scaling down to the five, I prefer using the five for identifying basic structure and
+using fibs.
+I think this is also, I don't think this touches the fib, but it just taps into the five
+minute gap.
+Oops, that's not the fib, that's the fib.
+So I mean, first of all, we got to kind of wait for a reason to place a fib, all right?
+And for that, we might use one minute, five minute, it's kind of up to you.
+If I got like a bearish close right there, I'll start looking for a re-entry in this
+bullish leg, right?
+So what do we have here?
+We have a five minute gap, we have a five minute breaker, right?
+I'm not going to mark all this, it's going to get very messy, let's see.
+Right there, so I'm going to delete this, you guys know it's there.
+What can we do with this information?
+Now let's see if we get a fib retracement here, all right?
+So we make a new high, now I'm waiting for a new bearish close right there.
+So this kind of changes our fib a little bit, okay, we're coming down, coming down into
+a discounted five minute gap.
+Now looking at this, can we just enter off of the five minute gap and it doesn't hit the
+discount?
+Now we can, the gap is in discount, so that is a valid way to enter, me personally though
+I prefer if it hits the actual discount level, but like this is, so it hits 41 and the
+discount is at 40, so like if I get a reason to enter here, I'm not really going to care,
+all right, and we can see that we do get a woman of rejection block out of this and
+this would be valid right at edges, the discount itself by a point, but we sweep liquidity
+into a discounted pd array, not going to be that greedy, all right, so the entry in this
+case would have been like right here, right, possibly put it like below, I'm going to
+delete these drawings, because they're messy as fuck, below the discount by a couple
+ticks, so let's just make this a 15 point stop.
+Back to the first internal high is a 1 to 6, all right, so we'll see how this plays, that
+plays out pretty nicely, all right.
+So that's how to kind of, that's just a trade breakdown pretty much in replay, right,
+and how to go about it if it edges the discount itself, right, can we justify taking the entry,
+although it doesn't tap the very specific discount line, yes we can, with obviously this
+is using an entry trigger, so yes, because if you do five minute and you have a limit
+there, right, you're just going to get edged, waiting for your limit to get tagged.
+If you get edged like this though, by one point, scale down into the one minute and be
+like, am I getting a one minute reason to go along here, yes, I am, is it low risk, good
+risk reward, yes it is, I'm going to press that fucking by button, all right, good, so
+I guess we can keep it going here.
+So let's look at the next possible entry on the fib, holy pump, all right, we have
+established one, or I'm sorry, higher time frame is confirming bullish, so let's just
+see if we can get some more entries here, all right, price makes a new high, I got
+to make the fib higher, all right, let's draw it out a little bit, oops, want to make
+sure I get it precise, right there, so wait, wait, wait, patience, okay, so we're tapping
+into some five, oops, let me extend it even more.
+So what do we see here, all right, first thing we do, we tap into five minute structure
+right at this count, right, and then what happens, we create a five minute rejection lock,
+now I click too much and this got ran, okay, but let's see what this trade would look like,
+would have looked like this, what is it if we take the first internal high, it's going
+to be a one to ten almost, all right, 13 points stop, very, very acceptable, this only
+gets a 55 up to 68, it gets like a 13 point reaction, which not enough to go break even
+my opinion, but yeah, this is a loss, so let's get back to the five minute, see if we
+can get a more discounted entry, we hit 0.62, can we get a five minute rejection lock out
+of this, there is one, right, again, valid entry, let's see what it's looking like, 17 point
+stop, first internal high is 1 to 8, definitely acceptable, now this gets tagged in and also with
+these entries, by the way, I'm just using the beginning of them, the rejection locks, if you want a
+better entry, you can use the CE, you can do whatever, but if you want to make sure you get in the
+trade, this is kind of how we'll play it, so let's see if this plays out, I would probably go
+break even, yeah, right there, we took out this internal high on the one, so would have gone
+break even there, let's see if this plays out, right, that plays out beautifully for a 1 to 8, now, let's put
+this into perspective, I know I talked to you guys about low trade frequency, right, but when we have
+these high risk reward plays, it is important that we actually take the good setups that get
+presented to us, all right, this, there's nothing wrong with this setup, right, we get a five minute
+rejection lock in five minute structure, discounted on the fib, right, do we, are we aware that there
+is a better entry further down, more discounted, yes, but we have to take the opportunities that are
+presented to us, if we take one trade too much, too many, whatever, when our risk reward is looking
+like this, right, this little tiny loss, I won't give a fuck about this loss, right, if I take this
+loss, which was, I think, what was it, 17 points, stop loss, 16 points, something like that, for 1 to 10,
+and then I lose, and then I go literally like 15 minutes later, I get a new entry, and it plays for a 1 to 8,
+I don't give a shit about like the previous loss, all right, so that's obviously a little
+perspective lesson there, like, yeah, I talk about low trade frequency trades and all this, but
+it is actually important that we take the opportunities that are presented to us, okay,
+so, I mean, we can keep looking for fibs in this leg, but I think you get the point, right,
+it is not rocket science, none of what I teach is rocket science, my opinion it shouldn't be
+rocket science, okay, key opens, pretty simple, rejection blocks, pretty simple, fibs, pretty simple,
+like if you do something that is very simple, it is not wrong because it's simple, all right,
+like, you can eat like even limit these levels, right, as long as you have the
+confirmation on the left side of the fib, right, you have the structure telling you that
+we are going to remain bullish, you can even limit these, right, if you limit the fib,
+what I usually say is limiting the 0.5, not really a big fan, the best levels to limit
+on the fib are going to be 0.62 and 0.705, because they give you a pretty good risk in terms of
+covering the whole fib, right, in this case, this is pretty volatile, so this, let's say I
+limit 0.62, I want my stop loss to be ideally covering 0.79, which is the most discounted,
+I'm going to let price get before, like, before the possibilities that this is going to get
+resweft are going to be in higher favor, or you can cover the 0.705 up to you, what risk you want to
+accept if you limit 0.62 with a stop low 0.705, you're getting a 1 to 5,
+below 0.79, you're getting a 1 to 3, which is like the minimum risk reward that I would use,
+all right, a 1 to 3. Now, in this case, could you just extend your TP and get a better risk reward,
+yeah, yeah, obviously limiting 0.75, covering 0.79 is a pretty consistent good set up,
+my opinion, but you've got also run the risk of getting edged, like, what happens right here,
+right, price goes to 62, and it reverses, doesn't go to 0.705, so it's kind of like up to you,
+personal preference, what you want, are you comfortable taking more setups, getting more stop
+losses, but like, having a higher chance of getting into the trade, or would you rather wait for
+the most discounted entry every time, running the risk of not getting in the trade at all,
+as long as that doesn't make you tilt, that's fine, in my opinion. So yeah, the thing I like about
+the fib is it gives you a pretty versatile way of trading, like, are you unsure of this and that
+pd array, this in this structure, blah, blah, slap the fib on there, look what the risk is going to
+look like, and take it from there, obviously combine it with other pd arrays, like I've just shown you,
+yeah, I'm not going to sit here in the app for longer than I have to, I think you get the point,
+with the fib, don't over complicate it, combine this with key opens and rejection locks and all this,
+and obviously, the more basic structure, like ferrali gaps, inverse ferrali gaps, order blocks,
+breakers, all this stuff, but yeah, it is important that we keep it relatively simple so that we can
+understand it, stick to it, visualize it before it happens, that's all I wanted to say pretty much,
+so, good talk.

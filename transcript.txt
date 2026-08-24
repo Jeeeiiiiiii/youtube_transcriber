@@ -1,0 +1,1296 @@
+Ajit: Hey, hi Hussein. How are you? Thanks for joining.
+
+Hussein: Hi Ajit, I'm doing good, thank you so much. How are you doing?
+
+Ajit: I'm good as well, thanks for asking. Let's do one thing — let's quickly
+       introduce ourselves and then we can deep dive into the interview.
+
+Hussein: Sure.
+
+Ajit: Would you like to introduce yourself first?
+
+Hussein: Sure, I'll go ahead. First of all, thank you so much for having this
+          call. I'm Hussein Lokhandwala, I have more than 4.5 years of
+          experience as a DevOps engineer, and I'm certified in AWS, Kubernetes,
+          Terraform, and Azure. I started my journey in 2021 as a junior DevOps
+          engineer, worked there for 1.5 years, and then I switched to my
+          current company where I'm working as a senior DevOps engineer. My
+          day-to-day activities mostly look like this: we support a US client
+          and we work in an agile methodology. We have junior developers, junior
+          DevOps, and senior DevOps engineers in our team. My main
+          responsibility is to take care of the tickets that are assigned to us,
+          set up the priority, and complete those tickets. I also assign tickets
+          to the junior DevOps engineers, and I have to create a few proof of
+          concepts for the clients and move ahead if those go well. I'm
+          passionate about solving complex problems and architecting new things.
+          Yeah, that's about me.
+
+Ajit: Thanks, Hussein, for the brief introduction. I'll also quickly introduce
+       myself. I'm Ajit. I lead the technology team at one of the service-based
+       companies in India. I have about 14 years of total experience in the IT
+       industry across multiple domains and geographies. For the initial 6 to 7
+       years of my career, I was more into full-stack development. Later, for
+       the next four to five years, I was into cloud platform engineering,
+       solutioning, and a few cloud leadership roles. For the last one and a
+       half years, I've taken a leadership role at this company where I'm
+       heading the entire technology unit. So, let's get right into the content
+       of the interview. Hussein, tell me one thing — how would you architect a
+       fully available and fault-tolerant application on AWS?
+
+Hussein: Okay. First of all, I'll assume a couple of things — the application is
+          a data analytics one and a lot of services are required. So we'd go
+          with EKS. Starting from the basics, talking about the networking part:
+          we'll create a VPC with private subnets and public subnets, and we'll
+          make sure the compute and database are in the private subnet and the
+          application load balancer and similar components are in the public
+          subnet. Accordingly, we'll set up the NACLs and security groups. For
+          storage, we'd use S3, and we'd enable cross-region replication so that
+          the data is also replicated in another region. For databases, if we're
+          using RDS, we'll enable read replicas in a cross-region setup as well
+          for disaster recovery. If the application allows, we'd go with
+          DynamoDB because it supports global tables. Coming to compute — as I
+          said, we'd use EKS. It also supports cross-region node deployments, so
+          we'll have a cluster in the primary region and a secondary EKS
+          deployment in another region. For monitoring, we'd use AWS CloudWatch
+          logs, and we can integrate Prometheus and Grafana to get custom
+          application and Kubernetes logs. We'd also set up Route 53 with
+          failover policies, so if any region goes down, the traffic gets
+          diverted to the DR region. For security, we'll use AWS Secrets Manager
+          to store secrets, and we'll try to have everything automated. We'll
+          have Terraform pipelines and application deployment pipelines, and
+          we'll use a GitOps approach with Argo CD since we're using Kubernetes.
+
+Ajit: Okay, okay. So you mentioned you'll use EKS, right? Any specific reason
+       you'll use EKS and not another container service like ECS?
+
+Hussein: I assumed the application is a data analytics one and a lot of security
+          is required, and that there are a lot of services to manage. So in
+          those terms, I'd go with EKS because it provides more in terms of
+          security — RBAC rules, network policies, and deployments are way
+          easier using Argo CD and GitOps. Rollbacks are also easier on EKS.
+          Considering those scenarios, I chose EKS over ECS or EC2.
+
+Ajit: Okay, and why do you think ECS wouldn't be a good choice in that scenario?
+       Because I've seen a lot of enterprise-grade companies use ECS for their
+       highly available and fault-tolerant applications. You mentioned security,
+       you mentioned Argo CD and other things — don't you think ECS also
+       provides that kind of stuff that EKS does?
+
+Hussein: ECS also provides it, but in terms of security it's more limited to
+          AWS. You can have your access defined in the task definition roles and
+          that's about it. On EKS, you get a lot of customizations available.
+          Again, it depends on the application's needs — if the application is
+          okay to work on ECS, we can select that as well. But if you need a
+          more complex architecture and more security, I'd prefer EKS.
+
+Ajit: Okay. Can you tell me a scenario where ECS would be better suited compared
+       to EKS?
+
+Hussein: Sure. If you have a simple deployment, not a lot of services, and you
+          think everything can be managed inside AWS with access management
+          handled through IAM role policies — in that kind of scenario, we can
+          definitely go with ECS. You just have to mention the task definition
+          and all the services you want, and it's definitely a reliable choice.
+          You can also mention the routes in the application load balancer. So
+          if you feel everything can be managed using those specific services
+          and you don't need complex things like ingress or Istio, then you can
+          go ahead with ECS.
+
+Ajit: Okay. And which one do you think is cheaper compared to the other?
+
+Hussein: ECS is cheaper.
+
+Ajit: Why do you think ECS is cheaper?
+
+Hussein: Because it only costs you for the services that you use. With EKS, it
+          charges you for the EKS cluster by default even when no nodes are
+          running, and as soon as you spin up nodes and use a lot of EKS
+          services, it becomes way more costly.
+
+Ajit: Okay. So you mean to say the EKS control plane is also billable, and in
+       the case of ECS only the underlying infrastructure is billable.
+
+Hussein: Correct, yeah.
+
+Ajit: Okay, anything apart from that?
+
+Hussein: Apart from that, I'm not able to think of anything right now.
+
+Ajit: Okay, no worries. Now, you also mentioned public subnets and private
+       subnets, right? When you create a subnet, there's actually no option to
+       create a private subnet or a public subnet — it's some configuration that
+       needs to be done to make that subnet public or private. So I wanted to
+       understand, what is that configuration? How would you make your subnet a
+       public or a private one?
+
+Hussein: Okay. The answer lies in the route tables assigned to that subnet. If
+          you mention in the route table that the traffic from that subnet
+          should go through an internet gateway, it becomes a public subnet —
+          any route out of that subnet goes through the internet. And if you
+          mention that the traffic should go through a NAT gateway — which is
+          attached to a public subnet — then that subnet becomes a private
+          subnet.
+
+Ajit: Okay, and is the internet gateway attached to a subnet or to a VPC?
+
+Hussein: It's attached to a VPC.
+
+Ajit: Are you sure about that?
+
+Hussein: Yes. And the NAT gateway, as I said, sits in a public subnet.
+
+Ajit: Okay. And where are the rules? Suppose I have a private subnet and my
+       private subnet needs access to the internet. Where would my outgoing
+       rules be — in the public subnet or the private subnet route table?
+
+Hussein: In the private subnet route table, you'll mention that any outbound
+          request from the private subnet should go through the NAT gateway.
+
+Ajit: All right, okay, fine. Have you worked with hybrid networking in AWS?
+
+Hussein: Yes.
+
+Ajit: Okay. If I have to connect my on-premises network with AWS, can you list
+       down all the choices you have to connect both the networks?
+
+Hussein: Sure. The first option is Direct Connect — if you have tons of workload
+          that you have to migrate or transfer from the AWS cloud to on-prem,
+          Direct Connect is one option. The second option is a site-to-site VPN
+          connection, where you create a customer gateway and an AWS gateway,
+          and that way you can connect your on-prem and cloud. The third option
+          I can think of is Transit Gateway — that's also something you can
+          configure to handle data transfer from AWS to your on-prem. If you
+          don't have a lot of workload, then Transit Gateway and site-to-site
+          VPN are good choices because they're cheaper than Direct Connect.
+
+Ajit: Okay. Any other networking options that you can think of apart from these?
+
+Hussein: I think AWS Cloud WAN is also there — I can't remember the complete
+          name but there's another service like that.
+
+Ajit: Okay, fine. There's also VPC peering in AWS. So why do you think you
+       require a Transit Gateway, and what problem does Transit Gateway solve?
+       Why is Transit Gateway required in the first place when we have VPC
+       peering? If you have to connect multiple VPCs within AWS, how is Transit
+       Gateway beneficial compared to VPC peering?
+
+Hussein: If you have to connect only two VPCs, then VPC peering is fine. But
+          let's say you want to connect more than two VPCs — five or ten VPCs —
+          then you have to do VPC peering among all of them, from A to B, A to
+          C, A to D, and so on. VPC peering is not transitive. But Transit
+          Gateway is a hub-and-spoke model, which means you can just have one
+          Transit Gateway in the middle connected to all the VPCs, and then all
+          the VPCs can communicate with each other through the Transit Gateway.
+
+Ajit: Okay. So you mentioned that VPC peering is cheap compared to Transit
+       Gateway when you're only connecting two VPCs. Why do you think that is?
+
+Hussein: The data transfer via VPC peering is cheaper than the data transfer via
+          Transit Gateway.
+
+Ajit: Okay.
+
+Hussein: So it depends on the data transfer. The configuration itself is fine.
+
+Ajit: Okay, fine. Hussein, have you worked with disaster recovery in your
+       experience?
+
+Hussein: Yes, I've worked with that.
+
+Ajit: Okay. Suppose I have an e-commerce website, and I want to design a
+       disaster recovery solution for it. The DR region should be geographically
+       isolated from the primary one. What solution would you design?
+
+Hussein: Sure. First of all, I'd want to understand how critical the application
+          is, and I'd ask if you're okay with some downtime or if no downtime is
+          required. Accordingly, I'll set up a solution. Let's go through those
+          scenarios. In the first scenario, where you say you can handle some
+          downtime but need a cheaper solution, we'd go with a backup and
+          recovery process — we back up the EKS cluster, the application, and
+          the RDS, and we're ready so that whenever a disaster happens, we spin
+          up a new EKS cluster and a new RDS in the DR region, and once the
+          application is up, we route the traffic to the new region. In this
+          scenario there might be some downtime, but it's the cheapest solution.
+          In the next scenario, where you want less downtime, we can have a read
+          replica in another region for RDS, and we can have an EKS cluster
+          there but with all the nodes scaled down to zero — meaning your
+          application isn't running but it's ready, so whenever a disaster
+          happens, in a short amount of time we just spin up the nodes of the
+          EKS cluster and route the traffic. In the third scenario, where the
+          application is very critical and you can't afford any downtime, in the
+          DR region we'll spin up a fully scaled EKS cluster, we'll have an RDS
+          read replica, and at the time of disaster, we'll rely on failover
+          policies in Route 53. So whenever the application load balancer isn't
+          returning a healthy check in the primary region, all the traffic will
+          be diverted to the secondary region, and without any downtime the
+          users won't face any issues — all the traffic will go to the DR
+          region. That's how we'd set up DR.
+
+Ajit: Okay. Now, what if you want to support this e-commerce website globally?
+       Imagine it'll be accessed from the US as well as India, and the latency
+       should be minimum. If someone from India tries to access it, it should be
+       served from the nearby data center, and similarly for the US. In that
+       case, how would you design the solution? I also want to separate the
+       writes — the database also needs to be separate from each other. In that
+       case, how would you support both regions at the same time?
+
+Hussein: Okay, sure. For that, we'd also make use of a CDN like CloudFront,
+          which is a global service — it'll help us serve the static content.
+          We'd use a global load balancer so that any request coming from a
+          specific region is handled in that region itself. For databases, we'd
+          have read replicas in all the regions where the traffic is coming
+          from, and to reduce latency we can use ElastiCache or Redis for
+          caching data in those specific regions. That's how we'd maintain the
+          lowest latency, and users can get the data from the nearest data
+          center.
+
+Ajit: Okay, but the CDN will take care of your front end and ElastiCache will
+       cache your database queries — that still won't support multiple writes,
+       right? It needs to be some kind of global table solution to make that
+       happen. But that's okay, not a problem. So basically, you've worked with
+       compute, networking, databases, and storage. Can you name a few security
+       best practices in each area that come to mind?
+
+Hussein: Okay. Starting from networking, I'd say make use of AWS services like
+          AWS Shield and AWS WAF — WAF lets you set specific rules so that
+          whatever requests are coming in can be authenticated first before
+          moving ahead. We can enable VPC Flow Logs to trace all the requests
+          flowing through the VPC. Those are the things I can think of on the
+          networking side. Second, on compute and storage: whatever RDS
+          instances or EBS volumes are getting created should be encrypted with
+          an encryption key, and we'll also make sure we back up those RDS and
+          EBS volumes. Next, we'll enable CloudTrail logs, and we can also
+          configure a few AWS Config rules so that if any misconfigurations
+          happen in our AWS environment, we can set up Lambda functions or
+          events to correct those things. Apart from that, monitoring — we'll
+          use CloudWatch logs and set up alarms for any issues. If any database
+          goes down or any CPU reaches a higher limit, we should be notified
+          about it so we can immediately take action. Those are the things I can
+          think of right now.
+
+Ajit: Okay, okay. This is good for an enterprise-grade customer. Having Shield,
+       WAF, and all these things is very costly, right? So if there's a
+       conservative customer who tells you, "Hussein, I just have to keep the
+       lights on, I have to ensure my infrastructure is secured enough, I don't
+       have a budget" — because as you know, security is very costly — in that
+       case, what are the bare minimum things that you would do to keep your
+       cloud secure?
+
+Hussein: Okay, got it. For those bare minimums: security group rules should be
+          managed with the lowest access possible — granular access, nothing
+          should be open to all. Second, NACLs — we can also configure those at
+          the subnet level. Next is maintaining granular access while providing
+          any policies on IAM roles. And if it's a small company, we'll also
+          manage access management carefully — whatever roles we've assigned to
+          users, those policies should be minimized. For example, if we're using
+          IAM Identity Center, the permission sets should be minimized — we
+          should have roles for each team and give them access accordingly.
+          Apart from that, the main thing is to deploy anything only through
+          automation. There shouldn't be any manual configurations done in AWS.
+          No one should have manual access. That's a very good practice — if any
+          DevOps team member needs infrastructure, they raise a request, the
+          DevOps team creates a Terraform code and deploys it, and then you can
+          access it. Those are the things a small-scale company can take into
+          consideration.
+
+Ajit: Okay. Now, one security best practice is keeping your databases in a
+       private subnet, right? But imagine a scenario where you need to keep your
+       database in a public subnet because some third party has to access it —
+       basically, I want to make my database accessible to a certain third
+       party. How would you extend access without compromising the overall
+       security?
+
+Hussein: There are a couple of ways of accessing your RDS. One is the
+          traditional user ID and password. The second way is to make use of IAM
+          database authentication, where you create an IAM role and only that
+          IAM role can access the database. That's something you can configure
+          even after keeping your database in a public subnet. You'd also attach
+          a security group rule to your RDS, making sure we're not opening the
+          port to the entire internet but adding specific IPs only. Apart from
+          that, we can also enable TLS for communication in transit, so any
+          request to your database must come over an SSL-certified connection —
+          otherwise it shouldn't get through. Those are the configurations we
+          can do.
+
+Ajit: Okay. If you have an EC2 instance and there's a vulnerable package
+       installed on it, AWS provides a service where an agent can be installed
+       and it'll tell you what kind of package is vulnerable and to what CVE. Do
+       you know what that service is?
+
+Hussein: I think AWS Inspector is the service that scans all the resources you
+          have in AWS and shows you the vulnerabilities.
+
+Ajit: Okay, fine. Have you worked with the Well-Architected Framework?
+
+Hussein: Yes, I've worked with that.
+
+Ajit: Can you list down all the pillars and maybe summarize each one of them?
+
+Hussein: Sure. There are six pillars. Initially there were five, and then
+          sustainability was added. So there are six pillars based on which you
+          should architect your framework. The first one is cost, then security,
+          then operational excellence, then performance, then reliability, and
+          sustainability. Let me brief each one. For performance, AWS tells you
+          to select the specific instances and RDS configurations that align
+          with your application, because there are multiple AWS instance
+          families and types and you might not know which one to select — the
+          framework helps you pick the right instance and RDS. Next is
+          operational excellence — there are multiple AWS services that help you
+          develop and deploy your architecture, like AWS CI/CD, backups, and so
+          on. So operationally, you can be very clear. For performance, again it
+          comes down to which services you're using, which services are best for
+          your application, which instance type you're selecting — those should
+          all be optimized. Next, reliability — we have multi-AZ availability
+          zones, disaster recovery, and backup and recovery, so there shouldn't
+          be any concerns about data loss. For security, confidentiality,
+          integrity, and threat detection are all handled by AWS services — we
+          just have to enable them and integrate them into our application.
+          Sustainability is mostly something AWS takes care of; it depends on
+          which instances you're spinning up — they should be sustainable.
+          That's mostly handled by AWS.
+
+Ajit: Okay. Have you worked with cross-account setups, where you have multiple
+       AWS accounts and you want to access a particular KMS key from one source
+       account in a destination account? Have you worked with this kind of
+       setup? One example could be KMS, another could be S3 — you have a source
+       EC2 instance in one account and you want to access an S3 bucket in
+       another. How do you facilitate that connectivity? What configuration is
+       required to enable it?
+
+Hussein: Sure. For this we'll use STS — the Security Token Service. Let's say
+          there's an AWS account A and an account B, and the EC2 in account A
+          wants to access an S3 bucket in account B. In the IAM role of account
+          A, we'll mention the STS assume-role policy and the ARN of the role in
+          account B. Then in account B, within that role's trust policy, we'll
+          mention the ARN of account A so that account A can assume the role in
+          account B. And in account B's IAM role, we'll allow the specific
+          access we need — like S3 access — inside the policies. So account A
+          assumes a role in account B, and then it can access the S3 bucket —
+          get or put objects, whatever the role allows.
+
+Ajit: Okay. While establishing this connectivity, did you face any issues in
+       your past experience? Have you ever had connectivity failures?
+       Cross-account access is tricky, right? Most of the time it doesn't work
+       on the first attempt, especially when you involve multiple environments
+       and multiple services. Is there anything that comes to mind — a
+       particular issue that took a long time for you to figure out?
+
+Hussein: Yes, regarding KMS keys specifically. You don't just give KMS key
+          access — you also have to give extra read access through the policies
+          in account B. I can't recall the exact permissions you have to add,
+          but there are additional policies you need. Also, when you're trying
+          to access an S3 bucket cross-account, you also have to mention in the
+          bucket policy that this specific role should be allowed access to the
+          S3 bucket. So bucket policies also have to be taken into
+          consideration.
+
+Ajit: Okay. Have you hosted a website on S3?
+
+Hussein: Yes.
+
+Ajit: Yeah, maybe a static website on S3. Do you remember — suppose I have a
+       domain abc.com and I want to host it on S3. Can you recollect what
+       configurations or steps you have to do to make sure the website is
+       publicly available and deployed on S3?
+
+Hussein: Yeah, we also have to use CloudFront in front of the S3 bucket — we can
+          mention the ARN of S3, and there should be an index.html file in S3
+          that we mention as the file to be served.
+
+Ajit: Okay. Anything else that comes to mind, or is that it?
+
+Hussein: Yeah, actually I don't remember fully because I did it a long time
+          back.
+
+Ajit: Okay, no worries, no worries. So we spoke about security — what best
+       practices to follow for cloud, compute, network, storage, and databases.
+       I have another question on similar lines, but with respect to cost. Most
+       customers nowadays are cost-sensitive, right? They're burning a lot of
+       money on infrastructure, and on top of their mind there's always
+       everything related to cost. So as a cloud engineer, what would your
+       suggestions be, and what would you implement in your cloud infrastructure
+       to make sure your customer is happy and you bring in a lot of FinOps or
+       cloud cost optimization solutions? It can be on any part — similar to
+       security, it can be on compute, databases, whatever. I just wanted to
+       understand your perspective on cost.
+
+Hussein: Sure. I've worked with healthcare domain clients where compliance and
+          security are the two main pillars they have to work on. But whether
+          it's an enterprise-level solution or a new company, everyone has to be
+          cost-sensitive. I'm definitely responsible for how cost management is
+          done. The way I'd look at it — first, I'll make sure compliance and
+          security aren't compromised when I'm trying to reduce cost. Then there
+          are a lot of things I'll go through. First, I'll check which service
+          is costing the most in the AWS account, and I'll see if we can
+          minimize it or use an alternative. Second, if I know certain instances
+          will be used for the long term, I'll definitely go for reserved
+          instances, and we can also pay up front — that's way cheaper. We can
+          also use spot instances for things like batch jobs — if any
+          interruption happens, it's fine for the developers. Next, there are a
+          lot of updates coming from AWS itself. For example, recently they've
+          said GP2 is available but GP3 is now out as well, and they recommend
+          shifting from GP2 to GP3 — it gives higher performance and is cheaper.
+          So I'll make sure to integrate those solutions — change instance
+          types, see what kinds of instances we're using and whether they're
+          required. Some instances are GPU-intensive, IOPS-intensive, or
+          memory-intensive — different families and types. If we can switch from
+          something like T3 to T3a because T3a is cheaper with the same
+          configuration, I'd jump on that. Next, we definitely take backups of
+          RDS and EBS — so what's the retention of those backups? If we're
+          keeping them longer than needed, I'll reduce the retention. Then for
+          storage classes in S3 — which class are we keeping it in? If we know a
+          particular set of data isn't needed frequently, we can move it to
+          Glacier or an archive class. I'll also use services like AWS Cost
+          Explorer and AWS Trusted Advisor, which give suggestions on how to
+          save cost. So yeah, those are the things that come to mind right now.
+
+Ajit: Is Trusted Advisor free?
+
+Hussein: No, I think you have to pay for it.
+
+Ajit: Okay. So you mentioned that if there are any batch jobs, you can use a
+       spot instance. Suppose I have a scenario where at 11:30 PM I want to run
+       a job that fetches some data from the database, processes it, and puts it
+       on some other data pipeline. In this scenario, would you still use a spot
+       instance? It's kind of a batch job, right — or a scheduled batch job that
+       needs to run at a particular time. Would you still run it on spot?
+
+Hussein: First, how long is your batch job taking, and if it's not completed,
+          are there any retries available? If retries are there, then definitely
+          you can use a spot instance. If it completes the job, fine. If it
+          doesn't complete the job because of interruptions and you can re-run
+          it, it's fine — you can use a spot instance, a new one will be created
+          and it'll run through.
+
+Ajit: Okay, what if that particular instance type isn't available in that
+       region?
+
+Hussein: There are a lot of alternative instance types available, or I'd switch
+          the instance family if required — because even a higher instance type
+          is still cheaper than an on-demand instance. So I'd again measure the
+          cost, and if it's still cheaper, we can use those.
+
+Ajit: Okay, no worries. Have you worked with infrastructure as code in your
+       experience? In AWS there's CloudFormation, and we have Terraform as well.
+       Out of the two, which one is more suitable for you, or under what
+       circumstances would you choose CloudFormation versus Terraform? I just
+       wanted to understand your thought process behind both technologies.
+
+Hussein: Sure. I feel Terraform provides a lot of functionalities — whether it's
+          for AWS only or multi-cloud. Mostly at the enterprise level we use
+          Terraform, even if we have to deploy everything on AWS only, because
+          it provides things like S3 for the state file, multi-cloud support,
+          and modularized code — meaning you write one code and reuse it
+          multiple times for multiple environments, so you don't have to rewrite
+          it. These functionalities are provided by Terraform. So mostly I'd
+          prefer Terraform over CloudFormation even when deploying only on AWS.
+          But there are a few situations where you'd go with CloudFormation —
+          one major thing about CloudFormation is that if any new service comes
+          to AWS, it'll take a bit of time before Terraform supports it, but
+          CloudFormation has it immediately. So if you're on a project where new
+          AWS services come out and you have to automate them, then you should
+          go with CloudFormation. CloudFormation is also easier for certain
+          things — for example, if you want to create a Lambda function, in
+          Terraform there's a longer process of writing the Python code, pushing
+          it up, and then creating the Lambda function, but in CloudFormation
+          that's easier. Those are a few situations where you might choose
+          CloudFormation, but if you ask me, I'd prefer Terraform.
+
+Ajit: Okay. So you mentioned multi-cloud, right? One of the key benefits of
+       Terraform over CloudFormation is its multi-cloud or cloud-agnostic
+       abilities. But imagine you have dedicated infrastructure only on AWS — no
+       other cloud provider, no on-prem, nothing. Would you still choose
+       Terraform, or would you go ahead with CloudFormation?
+
+Hussein: I'd still choose Terraform, because multi-cloud is only one of its
+          functionalities. There are others — modularized code, for instance.
+          The Terraform community is huge, so if you face any issues, you'll be
+          able to figure them out way more easily. If you have multiple
+          environments or multiple accounts to deploy to, you can do it in just
+          one Terraform directory. There are a lot of functionalities provided
+          by Terraform, which is why I'd still prefer it.
+
+Ajit: Okay. During the initial conversation, you mentioned load balancers —
+       during the high availability question. In AWS there are multiple types of
+       load balancers. What are they, and under what circumstances would you use
+       which load balancer?
+
+Hussein: Okay. AWS provides three types of load balancers: Application Load
+          Balancer, Network Load Balancer, and Gateway Load Balancer. There was
+          also a Classic Load Balancer, which is now deprecated. Talking about
+          the Application Load Balancer — if you have path-based routing or
+          host-based routing, and for most application use cases, we use ALB
+          because it works on Layer 7 of the OSI model, which is the application
+          layer. It mostly routes your traffic to target groups and EC2
+          instances. Next is the Network Load Balancer. It's used when you have
+          to serve traffic with very low latency. For example, you'd use NLB in
+          trading platforms where milliseconds matter and you can't afford any
+          delay on a request. NLB also lets you attach an elastic IP to it. The
+          third load balancer is the Gateway Load Balancer, which mostly comes
+          into play for security, because it integrates well with API Gateway
+          and WAF. It's mostly used in the financial sector where authorization
+          is more important than simply reaching the application. Whenever a
+          request comes in, the Gateway Load Balancer is responsible for
+          checking whether the request is authentic, and only then will it
+          forward it to the application. That's when you use Gateway Load
+          Balancer.
+
+Ajit: Okay. If you want to deploy your serverless applications, you can use API
+       Gateway and Lambda, right? What is the difference between using API
+       Gateway versus using an Application Load Balancer? Are there any
+       particular use cases where API Gateway is more suited, or where a load
+       balancer is more suited?
+
+Hussein: Yeah. If your APIs are only transferring data inside the VPC and
+          they're simple APIs where path-based or host-based routing is enough,
+          then you'd use an Application Load Balancer. But if your APIs have to
+          be authenticated, they're coming from third-party APIs, or you have to
+          send requests out to third-party tools, then you'd use API Gateway.
+          API Gateway also supports DDoS protection and TLS by default. There
+          are a lot of security configurations you can do in API Gateway. So in
+          those scenarios, you'd go with API Gateway. But if you just want to
+          route requests inside your VPC, I'd suggest an Application Load
+          Balancer.
+
+Ajit: Okay. Suppose your application is deployed completely on AWS. It has Route
+       53, load balancers, auto-scaling groups, maybe an EKS or ECS cluster, and
+       RDS instances. Users are reporting failures in your application. It can
+       be any kind of failure — we just got a message from one of our customers
+       that your application isn't working. What would your next steps be as a
+       cloud engineer to investigate the issue and remediate it?
+
+Hussein: Okay. The first thing I'd check is what changed when the application
+          was running. Was any deployment done, and after that the application
+          stopped working? Or was any configuration changed? I'd first check the
+          pipelines — if anyone ran a pipeline, if any infrastructure was
+          deployed, or if the application was deployed. If that's the case,
+          it'll be easier for us to catch the issue and we can revert it back.
+          But let's say no deployments were done — then I'd go to, say, EKS, and
+          check the logs of each and every component. I'd start with EKS, see if
+          the pods are running, if the application is active, then check if the
+          database is active, whether anyone stopped it, or if there are any
+          other issues. Next, I'd also look at the flow logs. We have monitoring
+          and observability in place, and we have health checks. We'd check
+          which health check is failing — is your ALB not working, or is your
+          database not working? I'll most probably identify the specific issue.
+          Then I'd see if a new application version was deployed — if so, I'd
+          revert it back so the application becomes stable. My first priority is
+          to make the application stable, and then figure out what the issue
+          was. So I'd first revert it, then look through the logs to find out
+          what the issue was, and then I'd try to redeploy it in staging and dev
+          environments first before moving to production.
+
+Ajit: Okay. Hussein, we spent a lot of time on AWS. Let's dive into the other
+       DevOps tools — Docker, Kubernetes, Terraform. I wanted to understand,
+       apart from AWS, what other DevOps tools are you well-versed with, and
+       what's your experience with them?
+
+Hussein: I'm well-versed with Terraform and Kubernetes because that's my
+          day-to-day work. I also create CI/CD pipelines on a daily basis using
+          GitHub Actions and AWS CodePipeline, and I work on creating and
+          pushing Docker images to ECR and deploying them.
+
+Ajit: Okay. Do you create Docker images yourself, or do you get Docker images
+       from the developers and you're just responsible for the CI/CD?
+
+Hussein: No, I create them as well. We get on a call with the developer — mostly
+          I create them, and the requirements, say a requirements.txt file, are
+          given by the developer, but we usually create a lightweight image.
+
+Ajit: Okay. In that case, I want to understand — what are some Docker best
+       practices you follow when it comes to image creation?
+
+Hussein: All right. As I said, we have to create a lightweight Docker image — it
+          should be optimized, not very heavy. For that, the first thing we
+          should use is multi-stage builds, where in the first stage you build
+          the application, and then you use that artifact in the final image
+          where you actually run the container. That's one thing — multi-stage
+          builds. Even then, you have to make sure you're using a lightweight
+          base image. Alpine is one of the lightweight images, but you shouldn't
+          use something like "alpine:latest" — there might be new changes you
+          weren't expecting, so always make sure the base image is pinned to a
+          specific tag. When we do update tags, we go through the documentation
+          to see what the new updates are in that image, and then we update.
+          Another best practice is to not run the container as root. We create a
+          specific user in the image and run the Docker container as that user
+          with access only to the specific folder needed. We also make sure that
+          whenever we create a Docker image, we document it, so if any new
+          DevOps engineer or developer comes and looks at the image, they
+          understand why each command is written and for what purpose. Those are
+          the things I'd make sure of when creating a Docker image.
+
+Ajit: Okay, and where do you host your Docker images?
+
+Hussein: Right now we host them on AWS ECR.
+
+Ajit: Okay, ECR. And how do you control how many images are in ECR? Because it
+       can grow, right? I've worked with a customer where some DevOps engineers
+       kept an unlimited number of ECR images, and their ECR usage and bill shot
+       up. What practices do you follow to ensure ECR images aren't orphaned and
+       only required images are there in the repository?
+
+Hussein: Correct, yes. That was a case with our organization as well, because
+          developers would tag and push a lot of Docker images, even for
+          testing. So we have a couple of Lambda functions that trigger on a
+          daily basis to check how many images are there. They keep the latest 5
+          to 7 images in ECR but clean up the older ones. We don't just do this
+          for ECR — we do it for other resources as well. For EC2 and RDS, if
+          they don't need to run at night time, we scale them down, because at
+          night no one is using them. Similarly, we do it for ECR.
+
+Ajit: Okay, fine. One of the challenges I face in our org is that developers
+       say, "This Docker image is working fine on my local machine, but when we
+       deploy it on the AWS environment, it doesn't work." This is a very
+       typical and common scenario. How do you ensure that whatever Docker image
+       is created on a developer's machine works as-is on an ECS or EKS cluster?
+
+Hussein: Yeah, correct. This was actually a major issue, and that's why Docker
+          came into the picture — "it works on my system but not on another
+          system." Docker is one of the solutions to that. But one issue I've
+          faced is that there can be a port issue — you're opening a port on
+          your local system but that port is already being used on EKS, Docker,
+          or the EC2 instance you're using. So we need to look at how you're
+          deploying it on your local machine and whether it's the same way we're
+          deploying it on EKS or EC2. That's one thing we'd get on a call with
+          the developer to check. Apart from that, we'd also check whether the
+          port you're opening is allowed in the security group — the incoming
+          requests have to be permitted. That can be one port-related issue.
+          Second, are the tags you're giving to your image being reused? That
+          could be a case where you're pushing a different image but pulling a
+          different image on EKS or EC2. Those are the things I'd look at first.
+
+Ajit: Okay, another common issue we see is with whatever images are pushed to
+       ECR. Nowadays we work with a lot of enterprise customers and they do
+       security scanning on those images. No images are perfect — there are a
+       lot of vulnerabilities because developers install a lot of packages from
+       here and there, and DevOps engineers also install a lot of packages from
+       here and there. Do you also take care of the overall security of the
+       Docker image, or does someone else?
+
+Hussein: No, we take care of it. The developer doesn't directly push an image to
+          ECR — we have a CI/CD pipeline set up. The process is: the developer
+          pushes code to GitHub, the pipeline triggers, and there are multiple
+          jobs and tasks. Initially, it checks the code using a tool like
+          SonarQube. Then it goes to the build stage where it creates an image,
+          and afterwards we have a tool like Trivy to check the Docker image.
+
+Ajit: Sorry, a tool like…
+
+Hussein: Trivy. It scans the Docker image and prepares a report, which is shown
+          to the developer, and only if everything looks good does it get pushed
+          to ECR.
+
+Ajit: Okay.
+
+Hussein: As a best practice, we also ask developers to run these security
+          scanning tools on their local first and then push their code to
+          GitHub, so that time isn't wasted and pipelines aren't running over
+          and over. We make sure that's a practice.
+
+Ajit: But how do you ensure the developer does the scanning on their local
+       first? Because you still need some control over the pipeline — you can't
+       just trust the developer to scan their code and then push. As a DevOps
+       engineer or a DevSecOps engineer, you still have to enforce certain
+       controls in the pipeline, right?
+
+Hussein: Correct, we definitely have those. But the way developers usually do it
+          is they just test it on the pipeline. What I'm asking developers to do
+          is first test it locally and then push to the pipeline, because when
+          you run the pipeline it also incurs cost. If a developer is pushing
+          ten times just for one change, that's not practical for the
+          organization. It's a best practice we follow — it's not that
+          developers just push code and it ends up in ECR; those checks are
+          still done in the pipeline. But just to avoid multiple pipeline runs,
+          we ask developers to check on their local as well before pushing.
+
+Ajit: Okay, fine. That's about security. But if you have to reduce the overall
+       size of the Docker image, what measures do you take?
+
+Hussein: We'd go through the Dockerfile, see which files we're copying in, and
+          as I said we have to use a lightweight base image. Multi-stage builds
+          also help optimize the image and bring the size down. Those are the
+          practices we follow to have a lightweight image.
+
+Ajit: Okay, all right. That was about Docker. Let's move to Kubernetes. You've
+       talked a lot about Kubernetes, your experience with EKS in general,
+       right? One thing I'm interested in is — how do you upgrade your EKS
+       clusters? What steps do you take to upgrade them? How do you make sure
+       your applications aren't down — like a zero-downtime upgrade?
+
+Hussein: Sure. Before upgrading any EKS cluster, we have a lot of prerequisites,
+          and we follow those first. We first create a runbook on the steps
+          we'll follow. Next, we go through the release notes for the Kubernetes
+          version we're upgrading to — are there any deprecated APIs, is the
+          application we've deployed compatible with the new Kubernetes version?
+          Those are the prerequisites. We also make sure the Terraform for the
+          EKS cluster and the application deployment both go through pipelines,
+          so any rollback can be done as soon as possible — we don't have to
+          wait. We also take a backup of the application using a tool like
+          Velero. After doing all these prerequisites, we first test the upgrade
+          in lower environments, and only then do we move to higher
+          environments. Now, how we actually do the upgrade: since we use EKS,
+          the control plane upgrade is managed by EKS itself. Then, one by one,
+          we cordon a node, drain it, upgrade it, and uncordon it. We follow
+          this process for all the nodes. After that, if we have any add-ons, we
+          upgrade those as well. That's mostly how we follow the process.
+
+Ajit: And just in case the upgrade fails — imagine you're moving from 1.x to
+       1.x+1 or some other version, and if it fails, if the application stops
+       working — what are your next steps?
+
+Hussein: Yes. As I said, because of this in the prerequisites we take a backup
+          of EKS and we're ready with the application deployment, because once
+          you upgrade you can't downgrade EKS — neither the node nor the
+          cluster. So first we'll troubleshoot to understand the issue. If it's
+          a version issue or an API issue, and a specific small service isn't
+          working because of which the whole application is down — can we do
+          something about it, can we resolve it? If it's not possible, then we
+          have to spin up another EKS cluster in the older version, deploy the
+          application on it again for the older version, get the application
+          stable so that users aren't affected, and then check what the issue
+          was in the deployment process and take a decision from there.
+
+Ajit: Okay. Have you worked with stateful applications on Kubernetes?
+
+Hussein: Yes.
+
+Ajit: Okay, can you give an example of a stateful application you worked with on
+       Kubernetes?
+
+Hussein: Yeah. There was a PoC we did where we had to deploy the application on
+          EKS and use MongoDB as the database. For MongoDB, we used a
+          StatefulSet — we created a couple of pods and persistent volumes for
+          it. That was one scenario where we used StatefulSets.
+
+Ajit: Okay, but in AWS you have a managed service called DocumentDB which
+       provides MongoDB support, right?
+
+Hussein: Yeah.
+
+Ajit: So why did you want it deployed on a Kubernetes cluster?
+
+Hussein: Okay, that was a requirement — to have it deployed on the Kubernetes
+          cluster. But if you ask me, the AWS-provided solution is better than
+          deploying it on EKS. They specifically wanted a PoC where everything
+          is deployed on EKS, to see how that would work.
+
+Ajit: Okay, but you didn't question them? Maybe as a DevOps engineer you should
+       start questioning as well.
+
+Hussein: Yeah, but when it's a business requirement, they're stuck to it, and
+          they wanted to check — it was a PoC.
+
+Ajit: Okay. One of the reasons could be cost, because AWS managed services are
+       very costly. There was a customer where they wanted Kafka deployed on
+       Kubernetes versus Kafka as a managed service. MSK is a managed Kafka
+       service from AWS, but they were reluctant to move from Kubernetes to a
+       managed service because of cost.
+
+Hussein: Correct.
+
+Ajit: So cost is one of the biggest concerns. But I'm of the opinion that
+       Kubernetes and EKS should mostly be stateless. Anything with respect to
+       state should be moved to a managed service or outside the Kubernetes
+       cluster. There are different opinions on this, but I still believe it
+       should all be stateless. You've worked a lot on deployments, right? There
+       are a lot of deployment strategies. I'm more interested in — does
+       Kubernetes support a blue-green deployment? If yes, what's the
+       configuration like? How would you deploy an application with blue-green?
+
+Hussein: Sure. Kubernetes definitely supports blue-green deployment, canary
+          deployment, and rolling update deployment, which is the default. For
+          blue-green, how I'd configure it: I'd first deploy the upgraded
+          version of the application. Let's say I have a specific namespace
+          where I have to update the application. I'll deploy the new version —
+          the whole deployment manifest for the new application — in that
+          namespace, and then I'll configure the ingress to decide how much
+          traffic should be diverted to the newer version. You manage the
+          configuration on the ingress — let's say currently 100% of your
+          traffic is going to the older version, you can update the annotations
+          on your ingress so that the whole traffic is diverted to the newer
+          version using labels and selectors.
+
+Ajit: Okay.
+
+Hussein: That's one way you can do it. You can also use Argo Rollouts.
+          Everything there is managed by the CRD you create in Argo Rollouts —
+          you mention all the configurations there, and you can also test it in
+          place.
+
+Ajit: Okay. Can you list down a few best practices with respect to Kubernetes —
+       not EKS or AWS? I wanted to understand specifically with respect to
+       Kubernetes.
+
+Hussein: Sure. One of the best practices is to mention requests and limits in
+          your pods — how much CPU and memory they'll utilize. Second, you
+          should make use of configuration primitives like Secrets and
+          ConfigMaps to hold your secrets and variables rather than hardcoding
+          them as environment variables in the application. Next, also make use
+          of monitoring your cluster. CloudWatch can do that if you install the
+          agent, but if you want custom metrics or custom application logs,
+          you'll use Prometheus and Grafana. It's very easy to deploy them using
+          Helm, and you can use PromQL to query specific metrics and visualize
+          them on a dashboard, so you're ready for any incidents. Next, using
+          Prometheus and Grafana you can also set up alerts — if a node is
+          taking more than 80% usage, you can get an alert. If you have
+          autoscaling set to stop at five nodes but pods beyond that aren't
+          getting created, you can get notified. Those are things you can
+          configure. For security, use RBAC, use IRSA — IAM Roles for Service
+          Accounts — so you can give access to a specific pod for a specific
+          resource and not grant the whole cluster access to those resources.
+          Those are the best practices I can think of right now for Kubernetes.
+
+Ajit: All right. You mentioned Secrets and ConfigMaps, right? But the Secrets
+       that come with Kubernetes out of the box — are they really secret, or do
+       you need to do more to make sure that configuration is secured? I think
+       Secrets can still be decoded, right, because they're in Base64 format.
+       Anyone who has access to a Kubernetes cluster can get that secret. So
+       imagine I want to connect my application pod to a database, and I put
+       that database password in a Kubernetes Secret. How do I make it more
+       secure?
+
+Hussein: At that level, what you can do is use RBAC — not give access to that
+          secret to all developers. Only specific DevOps engineers, or the
+          manager or tech lead, have access to those secrets. Then you can fetch
+          it from AWS Secrets Manager and store it in the Kubernetes Secret.
+
+Ajit: Right, yeah. So AWS Secrets Manager is the additional layer of security it
+       provides. Even if you have RBAC but don't use Secrets Manager, it can
+       still be a problem, right? Because I want to keep the secret in an
+       external location and not within the Kubernetes cluster.
+
+Hussein: Okay.
+
+Ajit: That's good. What kind of troubleshooting scenarios have you faced in
+       Kubernetes?
+
+Hussein: A lot, I'd say. Whenever you run a pod, there are a lot of scenarios —
+          there could be a CrashLoopBackOff error, an ImagePullBackOff error, or
+          the pod is stuck in Pending state and not getting scheduled to any
+          node. There are a lot of troubleshooting cases. Talking about one of
+          them — let's say there's a CrashLoopBackOff error where your pod is
+          restarting again and again. The first thing you do is go through the
+          logs — you can use "kubectl logs", or you can do "kubectl describe
+          pod" and you'll find the event mentioning why the pod isn't getting
+          created. From that you can find the reason and then decide what needs
+          to be done.
+
+Ajit: Okay. At the beginning you mentioned Ingress, right? My question is simple
+       — why do you need Ingress in the first place, because there's something
+       called Services in Kubernetes too. Services are also used to expose your
+       deployments and pods to the external world. So why did they need to
+       create another construct called Ingress? How is it different from
+       Services?
+
+Hussein: Correct. Services can communicate internally, but if you want to expose
+          a service so outside users can communicate with it, you'd have to
+          create a load balancer. Now, if there are ten services and you create
+          ten load balancers, that's a huge cost. That's why we use an Ingress
+          Controller — something like the NGINX Ingress Controller. You
+          integrate it with your Kubernetes cluster and mention all your routes
+          there. With just one Application Load Balancer and the service routes
+          defined in your Ingress, you can route your traffic to different
+          services and pods, instead of having ten ALBs for ten services.
+
+Ajit: Okay. You mentioned a lot of application deployments on EKS or Kubernetes.
+       What tool do you use to deploy your applications?
+
+Hussein: For Kubernetes we use Argo CD, which is a GitOps approach, as the
+          continuous deployment part of our CI/CD pipeline.
+
+Ajit: Okay, so you only use Argo CD, or do you use Helm plus Argo CD?
+
+Hussein: Yeah, it's Helm plus Argo CD.
+
+Ajit: Okay, because most organizations use Helm and have Argo CD on top of that
+       to pull all the Helm charts.
+
+Hussein: Correct.
+
+Ajit: So Kubernetes also has YAML, right? You can just write a deployment and
+       services and run it — it's quite simple. Why do you want to add the
+       complexity of something like a Helm chart? Why do you need Helm charts?
+
+Hussein: Helm charts are required — you can consider it a package of your
+          deployment. If you need Secrets, Deployments, ReplicaSets, ConfigMaps
+          — all of these things — what you can do is create a package and have a
+          values.yaml file to update the values. The major functionality of Helm
+          is that you can use the same configuration across different
+          environments. You don't have to write separate files for dev, QA, and
+          production. Using one Helm chart, you can make use of it in different
+          environments — you just have to update the values.yaml file depending
+          on the environment you want to deploy to.
+
+Ajit: Okay, right, right. There's a concept called probes in Kubernetes — there
+       are multiple types of probes. Do you have experience working with probes,
+       or do you just know what they are?
+
+Hussein: Yeah, I have experience. In one of the applications we had a liveness
+          probe and a readiness probe configured. Those were the two probes we
+          used.
+
+Ajit: How are they different from each other?
+
+Hussein: The liveness probe tells you whether the pod is actively running —
+          whether it's in a running state. The readiness probe tells you whether
+          the pod is ready to serve traffic. For example, if you have a pod with
+          a readiness probe configured, and that pod is trying to fetch queries
+          from a database but the database isn't working — the pod is up and
+          running, but it isn't able to fetch queries from the database. You
+          configure the logic in your readiness probe to check for that, which
+          differentiates it from the liveness probe.
+
+Ajit: Okay. There's a typical scenario that we've faced many times — we update a
+       particular config in our Kubernetes cluster that's added as an
+       environment variable in the pod definition, right? The idea is that the
+       config should work behind the scenes — I change a config and
+       automatically it should propagate and the application should start
+       working. But it doesn't work like that. If I make a change to a config, I
+       need to restart my pod. Why do you think this is needed, and how would
+       you overcome it? What I need is — if I change a config, my pod should
+       pick up the latest config behind the scenes.
+
+Hussein: Correct, yeah. It depends on how you're mapping your ConfigMap to your
+          pod. If you're mapping it using environment variables — that is,
+          "envFrom" — the pod will only fetch the values when it's starting or
+          restarting. But if you're mapping your ConfigMap as a volume in your
+          pod, then whenever you update the ConfigMap, it'll take the latest
+          values, because now you've mapped it as a volume and not just as an
+          environment variable. But there might also be a scenario where the
+          application itself is written to fetch values from the ConfigMap only
+          at startup. In that case, even if you mount it as a volume, you'd
+          still have to restart — but the solution of mounting it as a volume
+          usually solves the problem.
+
+Ajit: Okay, but what developers will claim is that it requires a code change,
+       right? Reading from an environment variable versus reading from a mounted
+       ConfigMap path is a change. For a developer it is a change. So that's
+       also one consideration we have to make. It's kind of a tricky situation.
+       Okay, I think that's it for Kubernetes. Let's quickly jump to Terraform
+       and IaC. We had a brief conversation on this versus that, right — why
+       CloudFormation versus Terraform. Imagine that you have an enterprise with
+       a Control Tower or a landing zone, and there are multiple accounts — 15
+       to 20 accounts — and they want to deploy their entire infrastructure, all
+       the accounts, and all the underlying infrastructure using Terraform. I
+       wanted to understand — how would you architect a Terraform directory?
+       Imagine I'm inside the Terraform directory. What would the different
+       folders and files look like? The requirement is that there would be
+       multiple accounts, and under each account there can be multiple
+       environments, and multiple regions as well. So considering this
+       requirement, how would you design the directory structure?
+
+Hussein: All right. Given the requirements — multiple accounts, environments,
+          and regions — first I'd try to group them. Let's group them by
+          environment and account. So my directory structure: I'd have three
+          root folders if there are three environments — dev, validation, and
+          production. Inside dev, I'd have the directory structure organized by
+          account — you can use the account name or account number. So inside
+          dev, there'll be sub-directories for each account number. Similarly
+          for validation and production. I'd also have a directory for shared
+          services, because there might be an AWS account where centralized
+          storages or other shared resources live — if that's a central account,
+          I'd have one directory for it. And a fourth directory would be for
+          modules. I wouldn't write code from scratch for all the accounts — I'd
+          make use of modules. For modules, I'd either use AWS-provided modules
+          or create local modules per our organization's requirements. Then I'd
+          call those modules — like IAM or network — which are reusable across
+          all accounts. I'd call those modules from the account-level
+          directories.
+
+Ajit: Mhm, mhm, okay. Are you working with open-source Terraform, or Terraform
+       Cloud / Enterprise?
+
+Hussein: Currently we're working with open-source only.
+
+Ajit: Open source. Do you face any challenges working with open source?
+
+Hussein: Right now we don't, because we're managing access through GitHub and
+          storing the remote backend in S3. For now I'm not facing any specific
+          challenges. But if we were using the Enterprise version, those things
+          would be taken care of by Enterprise itself.
+
+Ajit: Okay. So you're using open source, right? Suppose I have to deploy an EC2
+       to a production environment. Do you write your code on your local machine
+       and directly deploy to production, or how is the process?
+
+Hussein: No. If I want to deploy to production, definitely I can't do it
+          directly. First I have to go through dev. And even in dev, there's a
+          CI/CD pipeline configured where you store the TF state file in an S3
+          bucket. You'd first push the code, the pipeline would trigger, it'd do
+          all the security scanning — "tflint", "terraform fmt", "terraform
+          validate" — and then "terraform plan". After the plan, it stops and is
+          reviewed by a senior; if it looks good, they approve it, and then it
+          deploys to the dev environment. Then you'd raise a change request, go
+          through the approval process for validation and production, and in
+          validation and production the same process applies — push, get the
+          approval, deploy, and then you merge your change request to main.
+
+Ajit: Okay, but if your customer says, "You've got five minutes and you have to
+       deploy that infrastructure," would you still go through all these
+       iterations?
+
+Hussein: If it's an urgent requirement, there'll still be an approval process.
+          If we have the approvals and you want to deploy directly to
+          production, then you can run the pipeline directly on production — but
+          it still has to go through the pipeline process.
+
+Ajit: Okay. That's one kind of challenge organizations face when they use the
+       open-source version, right? When it comes to Terraform Enterprise or
+       Cloud, they give you some additional benefits that OSS doesn't provide.
+       That's a big challenge for us as well. When creating infrastructure,
+       there's also a lot of secret management involved. Suppose you want to
+       create a database, or an EC2, you have to pass SSH keys while creating
+       the EC2 instance. If you want to create an RDS instance, you want to use
+       an admin password. Where are these secrets stored? How would you make
+       sure those secrets are safe and not exposed to the external world?
+
+Hussein: Correct. If we're creating an RDS and want to add a username and
+          password, we'd use the "random" provider provided by Terraform — it
+          creates a random secret right there, creates the RDS, and then that
+          random secret with the username and password is stored in AWS Secrets
+          Manager. That's mostly how we used to do it.
+
+Ajit: Okay. But there's a scenario where I don't want my state file to have any
+       sensitive information. This random string will be created and stored in
+       the state file, right?
+
+Hussein: Correct.
+
+Ajit: So how would you ensure that doesn't happen? It's okay if you don't know —
+       but that will happen.
+
+Hussein: Yeah, definitely.
+
+Ajit: Some organizations will try to keep their Terraform state file secured in
+       a central location — you mentioned S3, which is good — and they'll try to
+       restrict access to that S3 bucket. But there are other alternatives as
+       well, right? You can still safeguard that particular thing. There are
+       hard requirements from security teams in some organizations where they
+       say, "It's okay if you don't automate the entire infrastructure 100%, but
+       our passwords should not be stored anywhere." In that case there are
+       other alternatives too.
+
+Hussein: Yeah. One of the practices we follow —
+
+Ajit: Right. We work with a few organizations that give a little bit of leeway —
+       where it's okay to have secrets in your Terraform state file. There it's
+       fine. But there are organizations like banks or highly regulated
+       industries where they want each and everything secured. They don't care
+       about automation — automation is to make our lives easier, but their job
+       is to keep everything secure.
+
+Hussein: In that scenario, what we usually do is create some secrets manually
+          using AWS CLI and pass them into Terraform.
+
+Ajit: Okay.
+
+Hussein: There's a little bit of manual work involved. But as we mentioned, the
+          organization needs to comply with 100% security, so that's a kind of
+          adjustment or arrangement we have to make. There's nothing right or
+          wrong in that — according to your requirement or your customer's
+          requirement, you have to make changes to your solution.
+
+Ajit: Okay. So we spoke about Terraform state. If there are multiple developers
+       — say ten developers or ten DevOps engineers working on their local
+       machines — how would you ensure, or what configuration ensures, that you
+       don't step on each other's work? The Terraform state will be stored in a
+       centralized location, but how do you guarantee that your changes aren't
+       overstepping each other's?
+
+Hussein: Okay. First, we have a trunk-based branching strategy — all the code is
+          in GitHub. Second, we store the TF state file in S3, and S3 makes sure
+          the state file is locked whenever one developer is using it. So the
+          next developer has to wait until that "terraform apply" is complete.
+          But let's say two developers are working in parallel and they don't
+          want to wait for the other to complete their job — in that case we use
+          workspaces, and the workspace state files are local only, so you can
+          test your code, run a "terraform plan", and test. Then if things look
+          good, you raise a PR, and at the time of the merge, the main pipeline
+          runs again, the actual TF state file is updated, and your code is
+          deployed. But before that, if you just want to test your code, you can
+          use Terraform workspaces.
+
+Ajit: Okay, so you mean Terraform workspaces on your local, right — not the
+       Enterprise or Cloud version?
+
+Hussein: Yeah, yeah, on the local.
+
+Ajit: Okay. Do you have any information on the Enterprise version of workspaces
+       and how they differ from local?
+
+Hussein: I haven't worked much with the Enterprise-level solution.
+
+Ajit: That's completely okay. One of the challenges I face working with my team
+       is that sometimes infrastructure fails — your Terraform fails, or
+       something doesn't work as per expectation. How do you ensure it goes back
+       to the earlier state, or maybe rolls back? Do you follow any practices
+       for rolling back your infrastructure with respect to Terraform?
+
+Hussein: Yeah, correct. There are definitely scenarios where your code passes
+          all the test cases, goes through "terraform plan" well, and then at
+          the time of deployment ("terraform apply") it might fail. First, we
+          need to check what services got created or destroyed, because there
+          might be a possibility that if a partial deployment is done, the
+          application might suffer or other issues might arise. First, I'll
+          check — if there are no issues like that — we'll revert back to the
+          older version or older commit and run the pipeline, so the deployment
+          is reverted first, and then we'll check what the issue was and how we
+          can resolve it. Again, it should be done from dev through to prod.
+          Another automation we can add is — as soon as the Terraform pipeline
+          fails, the workflow itself can be configured to check out to the older
+          version and re-run the pipeline, so we just get notified that the
+          pipeline has failed and the older version is up and running. That's a
+          configuration you can do on the workflow end as well.
+
+Ajit: Okay, okay. Fine, thanks Hussein. I think we've covered AWS, Kubernetes, a
+       little bit of Docker, and Terraform. I wanted to ask you some
+       non-technical questions. Right now there's a lot of buzz around AI —
+       DevOps or developer jobs are going to be cut, and so on. In your
+       day-to-day activities, how much of your work is driven by AI? Hussein
+       works for eight hours or has some X number of tasks — what number is
+       driven or assisted by AI, and what part does Hussein do himself?
+
+Hussein: Correct. As we work at an enterprise level and also in-house, one of
+          the things we have to maintain is documentation of whatever we do. For
+          documentation I'm completely dependent on AI. I try my level best to
+          have the AI create the documentation and all the points — it gives it
+          in a really good manner and I can use it. Second, I don't usually use
+          it for development, because I know AI tools hallucinate and give wrong
+          answers very confidently. So if I have to create any infrastructure or
+          deploy anything, my first place to go is the documentation. Terraform
+          has very good documentation, Kubernetes has its own really good
+          documentation. So for development I usually rely on the official
+          documentation only.
+
+Ajit: But the problem with that approach is it'll be slow, right? I remember
+       creating infrastructure — I've been working with Terraform since around
+       2018 or 2019, and with CloudFormation for that matter. When I started
+       creating a multi-account landing zone, I used to take 15 to 20 days to
+       script an entire landing zone — 10 to 12 accounts, CloudTrail configs,
+       multiple EC2 instances, ALBs, whatnot. But with AI — my team and I use a
+       lot of Cursor, and now Antigravity — we can create the same
+       infrastructure in a couple of days. So I understand that, as you rightly
+       mentioned, it hallucinates, the downsides are there, but there are
+       benefits as well. Imagine 10 to 15 days of work cut down to two days.
+
+Hussein: Correct. Yes.
+
+Ajit: But I was able to do that because I had the experience. I was able to
+       write the correct prompts, and if the tool hallucinated or didn't give
+       the required output, I was able enough to make changes to that. I think
+       you should start using a little bit of AI in your workflow. I understand
+       that documentation is the right place to go, but I still believe AI has
+       the potential. It's not going to replace the entire engineering work, but
+       it can be a good assistant. The problem right now with the mindset is
+       people are blindly relying everything on AI — that's the problem. But
+       maybe you'll get more confidence in AI, and you should start working with
+       tools like Cursor. Do you use any tools like Cursor, Antigravity, or
+       Claude Code?
+
+Hussein: No, as of now we don't use any of those.
+
+Ajit: I'd recommend you start with Cursor at least, and then maybe try other
+       tools. You'll certainly like it. Apart from that — you're currently
+       working as a cloud engineer or a DevOps engineer, right? What are your
+       aspirations? In the next five years, where do you see yourself? Do you
+       want to continue doing hands-on DevOps work, or do you want to get into
+       management or an architect-level role? What are your next five-year
+       plans?
+
+Hussein: For at least the next three years, I'd say I still want to be a
+          hardcore DevOps engineer where I have all the technical knowledge and
+          don't go into management. But if you say five years, then I'd
+          definitely see myself as a solution architect who can architect every
+          solution and be fully knowledgeable — where it's like, if Hussein has
+          said this should be done, then it should be done. I have to reach
+          there, and to reach there I have to rigorously first become a very
+          skilled DevOps engineer in the era of AI, adapting to AI as you said.
+          So after doing that, maybe after five years, I'll be at a solution
+          architect level where I still want to stay connected with the
+          technology — not just manage things and get things done, but create
+          architectures and work as a hardcore engineer.
+
+Ajit: Okay. Even with solution architects, sometimes people misinterpret the
+       role of an architect. I worked as an architect for six years, and for all
+       six years I was doing hands-on work. There's a thin line between an
+       engineer and an architect. An engineer is someone who does the hands-on
+       work. An architect is someone who does the solutioning, creates beautiful
+       diagrams, and creates the entire ecosystem, but they also need to be
+       hands-on in case it's required. That's where it needs to go. Apart from
+       that, one last question. I see a lot of tussle between DevOps engineers
+       and developers. How would you ensure that the friction between you as a
+       DevOps engineer and the developer is reduced, and the work isn't
+       compromised?
+
+Hussein: Correct, yeah. Even our title is like that — DevOps means developers
+          and operations. So definitely there's a lot of tussle where it's like,
+          "This work should be done by developers." "No, no, this work should be
+          done by DevOps." We usually face that issue. But this is something
+          where both of us have to be knowledgeable in each other's tasks. Let's
+          say someone wants to deploy something on Kubernetes — I also have to
+          know how the APIs work inside the application, and the developers
+          should also have some knowledge of how Kubernetes works. From both
+          ends we have to be knowledgeable. Of course, in this industry, if
+          you're not skilled enough, it's very hard to survive. This is also
+          where the tech lead comes into the picture — your manager comes into
+          the picture, lays down the tasks, and makes sure we're working as one
+          team and not doing a hand-off. We have to make sure that while
+          developing anything, I'm also there, and while developing CI/CD
+          pipelines and deployments, the developer should also be somewhat
+          knowledgeable about how things are done.
+
+Ajit: Right, right. Yeah, that was a good answer, Hussein. So thanks a lot for
+       taking this interview and taking out time for this mock interview. I
+       think a lot of people will benefit from this conversation. Anything you'd
+       like to ask me, or anything that comes to your mind? Maybe we can wrap
+       up.
+
+Hussein: Yeah, first of all thank you so much for having this and for taking
+          your time out. I also hope that people get the most out of the
+          interviews we're doing. One question I'd like to ask you — you have 14
+          years of experience. What is your next goal? After five years or ten
+          years, how do you see yourself? And how do you see the DevOps industry
+          growing in the next 5 to 10 years? What advice would you give to
+          freshers who want to build a career in DevOps?
+
+Ajit: Yeah. I'll answer this question in general, not specific to DevOps. When I
+       started working — as I mentioned in the introduction, for the initial six
+       to seven years I was into software development. When I was four to five
+       years into my career, I was fascinated with designations. I used to feel
+       that managers and directors had it made, and I thought I'd also become a
+       manager or director one day. Right now I'm leading a team of 30 technical
+       people, but I'm still doing three to four hours of hands-on work. I'd
+       consider myself successful over the next 5 to 7 years if I'm able to
+       maintain four to five hours of hands-on work. So I think people shouldn't
+       worry too much about designation. With the advent of AI, every single
+       person needs to stay hands-on, or they will become obsolete. That's going
+       to happen for sure. You'll see smaller teams. Initially, with big
+       companies, you used to see thousands and thousands of engineers, but
+       that's slowly changing. There are startups with five to ten engineers
+       doing multi-million-dollar businesses. That's going to happen. Over the
+       next five years, I believe a person should have at least basic knowledge
+       of all aspects, and with the help of AI they can learn other stuff as
+       well. If you ask me, full-stack is the need of the hour — a person needs
+       to understand front-end, back-end, databases, cloud, and DevOps. Even if
+       they're not an expert in a particular area, they need to understand all
+       of it. With vibe-coding tools and other new tools coming up in the
+       market, they can write software and create enterprise-grade solutions.
+       It's not quite there yet, but in a couple of years it can reach that
+       stage. Having said that, it'll give you problems. It'll fail in
+       production. Maybe it won't work. But you should have the capability to
+       make changes to that AI-written code. There are a lot of people doing a
+       lot of vibe coding — at the MVP stage they're very successful, but when
+       it hits production they start facing scaling issues and security issues.
+       That's where the main challenge comes in — your experience matters.
+       People with no programming experience, no DevOps experience, no software
+       engineering experience will fail there. We need to make sure that at
+       least we're able to make changes or update the code AI has written. So to
+       sum it up — regardless of where I am or what designation I'm in over the
+       next five years, I still want to keep hands-on. That's what I can say.
+       Hope I was able to answer your question.
+
+Hussein: Yes, yes, definitely.
+
+Ajit: Yeah. All right. Hussein, it was a good time talking to you. Maybe we'll
+       catch up later. Thank you.
+

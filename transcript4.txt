@@ -1,0 +1,531 @@
+Aditya: Hey, hi Prateek. Good afternoon. Thanks for joining.
+
+Prateek: Yeah, good afternoon. Thank you for giving me this opportunity.
+
+Aditya: Yeah. So maybe we can get started with a quick round of introduction,
+         and then we can deep dive further into the questions.
+
+Prateek: Sure, so I'll start with the intro first. I started my journey as a
+          cloud engineer about five and a half years back. In that process, I
+          started with development — I did it for a couple of months — and then
+          I slowly moved to the deployment part of it. I started liking creating
+          infrastructure, automating it, creating CI/CD pipelines, and
+          automating things in Python, shell, whatever was possible, because
+          making things easier was one of the things I loved about it. Then I
+          moved to a different organization where I worked as a solutions
+          engineer — understanding customer problems, suggesting a good
+          architectural overview, and how they could use the product in a better
+          way. After that, I moved to a different organization where I worked as
+          a senior DevOps engineer, and my entire responsibility was to automate
+          things and make processes easier — how we can roll out updates
+          frequently without any interruption, making sure of reliability and
+          high availability. After that, in my current organization, I'm working
+          as a consultant, and I've worked with different engagements across
+          teams. So it's mostly about DevOps best practices and automating
+          things.
+
+Aditya: Thank you for the brief introduction. So to start with — consider that
+         you want to develop an e-commerce application that will be accessible
+         throughout the world. So it's an international application. The
+         requirement is that it should be highly scalable, robust, and highly
+         available. You're free to use all the AWS services you like. So the
+         requirement is simple: it should be highly scalable, reliable, and
+         highly available.
+
+Prateek: Okay, sure. So we'll be using a VPC and subnets. I think there should
+          be at least six subnets — two for the web layer, two for the app
+          layer, and two for the database layer, if the database resides in the
+          VPC, like RDS or DocumentDB. In those private subnets, we'll have our
+          application servers in the app subnets, and in the database subnets
+          we'll have our databases like RDS — it could be MySQL, Aurora, or
+          Postgres, or a DocumentDB cluster as well. We'll also have a NAT
+          gateway as well as an internet gateway for our VPC. And we'll have a
+          transit gateway as well, if we want to access our data from our data
+          center, which resides in the organization or somewhere else locally.
+          Then we'll use load balancers to equally distribute the traffic across
+          our different instances. We'll also implement auto scaling to make
+          sure we can handle the load and increase the number of servers
+          whenever there's high traffic coming in. We'll utilize AWS RDS for
+          structured databases, with support for Oracle, Postgres, MySQL, MSSQL,
+          and so on. And we'll also use DynamoDB if we want a NoSQL database. We
+          can also utilize DocumentDB. So networking is done, we've got the
+          database. For storage, we'll use S3 — for storing any object-based
+          data we can use S3, and we can also use S3 for hosting our static
+          content. Over that, we'll utilize CloudFront as a CDN to deliver that
+          content faster with low latency. For DNS management, Route 53 is
+          there. So networking is done, storage is done, database is done. And
+          for compute, we can utilize EKS clusters to host the backend, and ECS
+          as well. It's based on how we're architecting our application. If it's
+          a monolith, we can also go with EC2 instances. And AWS Fargate is one
+          of the options we can go with if we're using containers. So I think
+          this is a very high-level architecture we can create for an e-commerce
+          application.
+
+Aditya: Okay, perfect. So you mentioned monolith and microservices in your
+         answer, right? You mentioned EKS, ECS, and normally EC2-instance-based
+         monolith. So under what circumstances or requirements would you choose
+         either monolith or microservices, and which is more beneficial over the
+         other?
+
+Prateek: Yeah, so it depends. If we're just starting with our product and we
+          don't have the expertise or the affordability to have so many
+          resources — to learn Kubernetes, to manage those clusters, because
+          with EKS you have to manage the clusters, manage the EKS versions,
+          learn how to implement all those things, and it could be a bit
+          difficult — but if you have a startup and you just want to get started
+          without all those hurdles, then you can start with a monolith
+          application. Also, if your architecture doesn't need to be that
+          complex, then it's better to go with a monolith. But if you want
+          flexibility and more configuration management, then it's better to go
+          with a container-based system like EKS or ECS.
+
+Aditya: Okay, so what's more complicated according to you — Kubernetes-based
+         systems or monolith? So if you have a large team, let's say 10 or 12
+         developers and DevOps engineers working on your product, which one
+         would you choose? Would you choose monolith, or microservices, or maybe
+         EKS?
+
+Prateek: Yeah, so it will again majorly depend on the architecture of the
+          application. Let's say it has 70 to 80 services — I need to manage the
+          routes for all of those and also the backend of all those
+          applications. So it's easier for me as a DevOps engineer to manage all
+          this via a Kubernetes-based system, because I don't want to manage all
+          those routes in a monolithic system where I have to create the routes
+          for all of them. Let's say I use nginx to create all those routes —
+          then it will pass through an ALB and then eventually to an EC2
+          instance or something. But if it's EKS, I can have a service created
+          for this. We can easily automate it — though it's manageable in a
+          monolith as well, but having a Kubernetes-based architecture makes
+          sure our application is reliably running, because whenever it goes
+          down, EKS will automatically keep it running. Monolith also does that,
+          but EKS makes it easier for us because it's managed.
+
+Aditya: Okay. And in the case of monitoring or observability, how would you
+         monitor this entire ecosystem or the entire application? What kind of
+         services would you use? Would you use all AWS services, or maybe some
+         external help as well?
+
+Prateek: Yeah, so when it comes to monitoring, we have very good tools available
+          outside of AWS. I'd go with Datadog and Grafana for visibility,
+          because Datadog also provides all the infra-level logging — what
+          requests we're getting, what the latency is, if there's any error or
+          warning, and all the traces related to the application infrastructure.
+          AWS X-Ray is one of the services within AWS that I'd go with for
+          application-level insights — if there are any application bottlenecks
+          with an API or something. If you want a very simple architecture, then
+          it's AWS CloudWatch, because it also has a lot of log insights within
+          it — every service has a log stream created if we configure it
+          correctly.
+
+Aditya: Okay, so if CloudWatch and X-Ray have all the required features, then
+         why exactly would you need Datadog in the first place?
+
+Prateek: Yeah, so it totally depends on our requirement. CloudWatch does provide
+          a lot of features, but when it comes to configuration — let's say I
+          want these many applications in a group, these many projects in a
+          group, or I want to make sure there are certain parameters or metrics
+          that are outside the supportability of CloudWatch — then I can go for
+          those custom metrics with an open-source tool rather than the
+          AWS-managed one, because there are certain limitations when it comes
+          to configuring CloudWatch. We can't go beyond those limitations, so
+          for that purpose we can use some open-source tools as well.
+
+Aditya: Okay. So in case of a disaster — just in case, as I mentioned in the
+         beginning, it's a multi-region or international application. Just in
+         case any region goes down, or any availability zone goes down in your
+         system, how would you react, or how would you build systems or automate
+         things so that your application is not impacted at all?
+
+Prateek: Yeah, so for disaster recovery purposes, we have to make sure that our
+          core database, where our data resides, is replicated not just across
+          AZs but across regions as well. So although we'll have a multi-AZ
+          configuration for our production deployment, we need to make sure we
+          have a copy of it across regions as well. So we need to configure
+          cross-region replicas of the RDS snapshots, which should be
+          synchronous of course, so we don't lose any data. And for storage —
+          whatever storage we have in our S3 bucket — we need to set up
+          cross-region replication for that S3 bucket as well. If required, we
+          can also use a global load balancer, which will make sure that if a
+          region goes down and isn't serving, we can utilize the data available
+          within the next available region. And for DynamoDB, a global table is
+          something we can make use of for those kinds of disasters. So yeah,
+          these are some of the high-level things I'd implement whenever
+          designing an application.
+
+Aditya: Okay, so we spoke about observability, we spoke about fault tolerance
+         and DR. So if you want to secure this particular application — and the
+         cloud infrastructure as well — what best practices or measures would
+         you take so that your application becomes secure?
+
+Prateek: Yeah, so when it comes to security of the application — the first
+          thing, as an e-commerce application, the threat it gets is a DDoS
+          attack. So we need to implement AWS Shield, which is a managed AWS
+          service that makes sure that whenever there's unexpected traffic that
+          isn't legitimate, it blocks it to a certain level so it doesn't impact
+          the running application. We can also implement AWS WAF, which is a web
+          application firewall, which makes sure our application-level threats
+          are managed properly, and whenever there's a compromise to security,
+          we make sure we're securing the application using rules in it. And
+          when it comes to accessing services within AWS, we can use IAM roles
+          for least-privilege access — so if EKS wants to access DynamoDB, it's
+          only using the permissions it needs and nothing more.
+
+Aditya: Okay, good. So moving on to the cost optimization section. The customer
+         is quite cost-sensitive, and as we're using a lot of AWS services — AWS
+         is not cheap, it's going to incur a lot of cost. So with respect to
+         your observability, security, and DR, what cost optimization measures
+         would you take so that it doesn't affect the customer's decision on
+         whether to choose this service or not? Basically, any five key points
+         that you'd implement in your systems so that we're also making sure
+         there are no humongous costs.
+
+Prateek: Okay, so cost optimization for the entire application, or only within
+          the storage part?
+
+Aditya: It can be generic to AWS. It can be within all the services — EC2
+         instances, S3 buckets, RDS instances. Anything that comes to your mind
+         is okay with me.
+
+Prateek: Sure. So let's start with the compute part. When it comes to having
+          instances, we need to make sure what our application actually requires
+          — whether it will be memory-intensive, compute-intensive, or
+          GPU-intensive. Based on that, we need to select the right instance
+          type. We also need to make sure we have reserved-instance plans,
+          because if we're sure we'll be using these many instances for these
+          many months or years, then it's better to go with reserved instances,
+          which give a discount of up to 70 to 80% and save a lot of money. We
+          can also use spot instances, which are cheaper, even though we're not
+          sure when those instances can be taken back — but it's better to go
+          with spot instances for any non-prod use cases and for stateless
+          applications where we don't really need the instances to run
+          continuously. For storage, within S3, we can use the right S3 storage
+          classes — for frequently accessed data we can go with S3 Standard, for
+          infrequently accessed we can have S3 Standard-IA configured, and then
+          for archives, we don't want the storage to be Standard, so we can use
+          S3 Glacier. And when it comes to file system storage like EBS, we need
+          to make sure we're selecting the right EBS type — there are GP2, GP3,
+          IO1, all those available, and we need to make sure we're selecting the
+          one that serves the purpose. We shouldn't use a highly IOPS-based EBS
+          volume if it's not required. And when it comes to data transfer costs
+          within AWS, we need to make sure we're using VPC endpoints for private
+          connectivity to avoid data transfer charges, because a NAT gateway
+          costs a lot. So when we're transferring data within availability zones
+          or across regions, these costs are taken care of. For RDS, we can use
+          reserved instances the same as EC2. And for CI/CD — when we use
+          CodeBuild or CodePipeline — we can also optimize those builds or tweak
+          the configurations to build faster, by having staged builds and using
+          an Alpine image or something. So these are some of the things I look
+          into.
+
+Aditya: So one final question on this particular use case. Since this is a big
+         enterprise — an enterprise like Amazon or Flipkart — they have certain
+         on-premises systems as well. They want access to the e-commerce
+         application servers and databases from their on-prem systems. So what
+         kind of services or systems would you use so that you establish
+         connectivity between your on-premises and your e-commerce application
+         residing in AWS?
+
+Prateek: So there are several ways to achieve that. One is a site-to-site VPN
+          connection within AWS — there will be a customer gateway and an AWS
+          gateway that can establish the connectivity. It'll be over the
+          internet, of course, but it'll be a private connection. We're not
+          directly targeting the EC2 instance to connect to it. And one more
+          thing we can do is make use of Direct Connect, which is like physical
+          lines or physical cables that connect your data center to the AWS data
+          center or availability zone. That's much faster and safer, but it
+          costs a lot. But if we have a lot of data to be transferred from our
+          data center to the availability zones, then it's better to have a
+          direct connection, because in the longer term it will save cost.
+
+Aditya: Okay. So Prateek, that was it for the AWS part. So moving on to
+         Kubernetes and EKS — what exactly is a StatefulSet, and how is it
+         different from a Deployment?
+
+Prateek: Yeah, so a StatefulSet is something where — let's say I have many pods
+          for a service — in StatefulSets it makes sure there's a dependency
+          between the pods. Even the provisioning of the pods is sequential. It
+          won't be like all pods coming up together and then shutting down
+          together. There's a sequence it follows, even for rollbacks and
+          updates, to make the scaling efficient. But in the case of a
+          Deployment, all the pods are stateless, so there's no dependency
+          between them, and they don't have a unique identity — they're treated
+          the same way. If one is replaced, the new pod won't be able to
+          distinguish which one was down. But in the case of a StatefulSet, the
+          pods have a unique identity and are assigned an ordinal index, so that
+          identity persists even if the pod is rescheduled. This is important
+          for applications that need to maintain state across pod restarts. When
+          it comes to storage, a Deployment typically has stateless storage —
+          meaning data isn't preserved when the pod is deleted, so if persistent
+          storage is needed it has to be manually managed or associated with a
+          pod, and it doesn't require unique persistent storage per pod. But in
+          a StatefulSet, each pod can be associated with a unique persistent
+          volume. This ensures the pod's data is preserved across restarts or
+          rescheduling, which makes it ideal for stateful applications where
+          data persistence is crucial.
+
+Aditya: Okay, any example that comes to your mind where you've used stateful
+         applications, or maybe StatefulSets?
+
+Prateek: Yeah, so let's say I have to manage a database, or have a database in a
+          cluster. For that purpose, it's better to go with a StatefulSet
+          because it's persistent — it has a volume, it won't be killed and my
+          data gone. But if I want a stateless application which is just getting
+          a request and then delivering the data after fetching it from the
+          database — then even if that service restarts, it won't lose any data
+          or state. So in that particular case, I'll go with a Deployment for a
+          service that's serving data from here to there, and for a database
+          kind of thing, I'll go with a StatefulSet.
+
+Aditya: Sure, Prateek. So how do you create a multi-stage Docker build?
+
+Prateek: Yeah, so a multi-stage Docker build allows us to use multiple FROM
+          statements in a single Dockerfile. Each has a separate build stage,
+          and this becomes very useful when we have to create smaller and more
+          efficient images by allowing us to copy only the necessary artifacts
+          from one stage and remove everything else that's not required. So the
+          major aspects of this technique: each FROM statement starts a new
+          build stage, and we can have as many stages as we want. Each stage can
+          use a different base image, and for artifact copying we can just copy
+          the artifact from one stage to another using the COPY statement — we
+          write 'COPY --from' with whatever stage we want to copy from. This
+          approach is especially useful to have a complex build process where
+          the build environment is different from the runtime environment. So
+          let me give an example of a multi-stage build where we're building a
+          Golang application. We can write 'FROM golang', some version, then set
+          up the working directory, then copy the module manifests — go.mod and
+          go.sum — and download the Go modules. Now we want to build the
+          application, so we run a 'go build' command that builds the
+          application. Now we create a minimal runtime image — we use a FROM
+          statement with an Alpine image, set the working directory with the
+          WORKDIR command, then copy the previously created build from the
+          previous stage into this stage, and then we run the commands. So what
+          are the benefits? Multi-stage builds help us create optimized Docker
+          images by separating the build environment from the runtime
+          environment, and they minimize the final image size. This becomes
+          useful for production environments where smaller image sizes are
+          preferred for faster deployment and a reduced attack surface.
+
+Aditya: All right. So as we know, Kubernetes is quite complex — it's not easy,
+         and it's certainly not for beginners. So what kind of troubleshooting
+         scenarios have you faced in your current project, or in production
+         systems, that you'd like to highlight?
+
+Prateek: So there are several errors we face while maintaining our clusters. One
+          common error is the CrashLoopBackOff error, where the pod goes into a
+          pending state due to some issue — it could be because it's not able to
+          fetch the image, or not able to start the application. So we can run
+          'kubectl get events' to get the events of that pod, and we can also
+          describe it to see if there's any misconfiguration that needs to be
+          taken care of. The get events give us a good idea of what's happening
+          and what caused the failure. Another issue could be that you're not
+          able to fetch the secrets due to some permission issues, so we need to
+          sort that out as well. One more major issue we face is a node not
+          having enough resources to scale the pods — so we have to add nodes as
+          well. Even though it's autoscalable, sometimes there are chances it's
+          not able to scale beyond the max capacity we set, so in those cases we
+          need to manually increase the node count. So these are some of the
+          issues we face.
+
+Aditya: All right. So in the microservices world, there would be any number of
+         pods — there could be thousands of pods. And it's not possible for a
+         human to log into each and every pod and get logs out of a particular
+         pod. So what kind of logging mechanism have you implemented in your EKS
+         or Kubernetes cluster so that the log files are centrally accessible to
+         each and every developer or DevOps engineer? So have you worked on a
+         centralized logging solution?
+
+Prateek: Sure. So to answer that — we have implemented the Datadog agent for all
+          the services. It acts as a DaemonSet on every node, so since it's a
+          DaemonSet it runs on all the nodes and gets data for all the services.
+          We can see which services are having errors, if there are any warnings
+          or info, in the Datadog console. When we go to application insights,
+          we see all the details of how the application is performing and if
+          there are any errors coming in. So that's one solution we're using.
+          And to see the logs locally — let's say you don't want to go to
+          Datadog — to manage our clusters we use Lens for that.
+
+Aditya: All right. So I see a lot of GitOps and Argo CD on your CV. So what
+         exactly is GitOps and Argo CD, and how is it different from traditional
+         CI/CD pipelines or a traditional DevOps setup?
+
+Prateek: Yeah. So GitOps is a very well-known thing now in the DevOps world. In
+          this, our source of truth relies in the Git repository. So whenever we
+          push or merge changes to the Git repository, it acts as the source of
+          truth. Whatever changes we've merged will get built, tested, and
+          whatever steps we want to do, and then it will be ready for
+          deployment. For deployment we used Argo CD, which was responsible for
+          deployments within the Kubernetes cluster. So whether it's a service,
+          a deployment, StatefulSets, secrets, or configs — everything was
+          managed by Argo CD. And it was much easier for us to have a good view
+          of what our application is updating — what services, what pods, what
+          kind of update strategies, what kind of rollback strategies. So Argo
+          CD was easier for us to manage. The pipeline was in GitHub Actions,
+          where we built, tested, and did the steps, and Argo CD was what we
+          finally deployed those artifacts to, and then it was deployed by Argo
+          CD to the EKS cluster.
+
+Aditya: Okay. So you mentioned deployment strategies — so what kind of
+         deployment strategies are there in Kubernetes, or how many types can
+         you implement?
+
+Prateek: So there are several deployment strategies. The very famous one is
+          blue-green deployment, where we have an entire set of the application
+          ready to be served side by side. We try and test that particular set —
+          so if we have V1 and we want V2 to be deployed, we make the entire
+          infrastructure ready for serving, and then we test it. If it works
+          well, we shift the traffic from V1 to V2. Another one is a rolling
+          update, where we define the strategy for the pods to update
+          incrementally — it replaces old pods with new ones a few at a time. So
+          it won't be like all the pods going down and then all the new pods
+          coming up; it'll try to shut the old pods down one by one and bring
+          the new ones up. The application has multiple versions running
+          simultaneously, and this is good for production use cases where uptime
+          is crucial, and it allows for gradual replacement that can be
+          monitored for issues. So let's say my old version was running
+          seamlessly and now the new version has some issues and I get errors —
+          I can see those, stop it, and roll it back, instead of having all the
+          pods update at the same time and then getting surprises. So I
+          mentioned blue-green, I mentioned rolling, and one is canary
+          deployment as well. In canary deployment, it releases a new version to
+          a very small subset of users first — let's say 5 or 10% of traffic —
+          which allows testing in production before gradually rolling it out to
+          the entire user base. How does it help? It minimizes downtime to
+          nearly zero, because the traffic is split between the old and the new
+          version. So it's ideal for testing new features in production with
+          very minimal risk, and if the canary version works as expected, it can
+          be gradually rolled out to the entire user base.
+
+Aditya: Okay, great. So consider that you've deployed an application in EKS.
+         This application requires access to DynamoDB tables and your S3
+         buckets. So to give you a scenario: your pods will require access to
+         your S3 objects, and they'll also require access to DynamoDB tables.
+         And I should not configure any access key and secret key within the
+         application. So that's one requirement. So how will you ensure that
+         this requirement is fulfilled?
+
+Prateek: Sure. So for that purpose, we can create an IAM Role for Service
+          Account, which is called IRSA. To securely grant EKS pods access to
+          AWS services like S3 or DynamoDB, we can make use of IAM roles that we
+          assign — we can assign AWS permissions to Kubernetes service accounts,
+          which can ultimately be utilized by the pods. So we can have an IAM
+          policy created where we mention the S3 buckets, the DynamoDB tables,
+          and what kind of access we want — like put-item, get-object,
+          get-bucket, and so on. Once we have the IAM role and policy, we need
+          to create a service account in Kubernetes, and within the service
+          account we mention the IAM role that we're going to assume. Then, in
+          our pod configuration, we mention the service account, which will be
+          utilized to access those services, and we're good to go.
+
+Aditya: All right. So if you have to develop an application and deploy it across
+         your Kubernetes clusters, what would you prefer — deploying using a
+         Helm chart or a traditional Kubernetes manifest file? Which is easier,
+         and what would you choose?
+
+Prateek: Yeah, so it depends. If our application is very big and has a lot of
+          services, deployments, and config maps, then it's better to go with
+          Helm charts, because these are templates over the Kubernetes
+          manifests. So instead of managing multiple YAML files manually, we can
+          make use of Helm charts that package together all the necessary
+          resources. Helm charts also simplify maintenance by allowing us to use
+          variables and templating — we can define all the values in values.yaml
+          and use them across our manifests, which becomes useful while managing
+          multiple environments. We just change the values and we're good. And
+          when it comes to traditional manifests, whenever the number of
+          resources grows, we need to manage those files properly, because we
+          have repetitive configuration that changes across environments. So it
+          involves a lot of writing and maintaining separate YAMLs for each
+          Kubernetes resource.
+
+Aditya: Right. So the Kubernetes and EKS part is done. Let's move to Terraform.
+         Consider a multi-account structure in AWS — an organization or
+         landing-zone kind of setup where we have multiple accounts: a log
+         archive account, a security account, a networking account, and then
+         application accounts like production, UAT, and dev. Considering these
+         many accounts — the accounts are already created using Terraform — we
+         have to create infrastructure in all of these accounts and deploy
+         applications in all of them. So what would be your ideal Terraform
+         directory structure to manage this entire ecosystem, or this entire
+         landing zone?
+
+Prateek: Sure. So when it comes to the directory structure, it depends on two
+          things. One is the kind of resources I have. As you mentioned, we have
+          separate network, security, and logging accounts, and the application
+          accounts as well — account A, account B, account C — along with
+          multiple environments. So my structure would look like this: I'd have
+          modules created for all those logging, security, and networking
+          resources, which I'd reuse within the different environments. So I'd
+          have a TF-modules directory as the root directory, and in it I'd have
+          multiple modules — for networking, for logging, for archiving, and for
+          other purposes if I want any other kind of account, say for serving or
+          something. Then I'd have environment-based directories for the
+          different accounts — environment dev, environment UAT, environment
+          prod. In those environment directories, I'd have the configuration for
+          that specific environment, so I can reuse those modules just by
+          passing the variables. By using modules, I mean we'll utilize the
+          TF-modules directory modules, and we can just pass the variables to
+          that particular module and provision the infrastructure. Same for UAT
+          and prod — so we don't need to write the same repetitive code for all
+          those resources again and again; we can just reuse it via modules.
+
+Aditya: Okay. So you mentioned modules, right? There are custom modules that you
+         develop, and there are a few official modules from AWS on the Terraform
+         registry. So if you create your own custom modules, what benefit does
+         it give? Because some — or most — of the modules are already developed
+         by third parties and certified by AWS and Terraform. So why would you
+         create your own modules?
+
+Prateek: Yeah, so it depends on our requirement. If we want only certain
+          parameters to be used, then we can have only those parameters as
+          inputs or variables to be passed, because the official AWS Terraform
+          module won't support exactly the set of variables we want. So if I
+          want any manual configuration change for that particular module, I can
+          write my own module — even though it'll have the same resource block,
+          variables, and parameters behind the scenes. But it involves rewriting
+          the module yourself, even though you can also use the managed AWS one
+          and write a wrapper on top of it and reuse that.
+
+Aditya: So have you ever worked on dynamic blocks in Terraform, and if yes, what
+         exactly is that, and what's the use case?
+
+Prateek: So I recently used a dynamic block while creating a DynamoDB table
+          where I required multiple attributes to be used. For that, I passed a
+          map including a lot of attributes, and for every map value it creates
+          a new configuration block — it just iterates over that map. So it gets
+          all the configuration attributes passed in that dynamic block.
+
+Aditya: All right, so one last question, Prateek, and then we can wrap up this
+         interview. How would you create a perfect, or near-perfect, DevSecOps
+         pipeline? You're free to use any kind of tools — open-source or cloud.
+         I want to know the answer right from when the developer checks in his
+         code up to the actual production deployment.
+
+Prateek: Yeah, sure. So whenever a developer checks in his code, it goes to a
+          testing phase — the testing tool could be SonarQube. Then there will
+          be a security testing phase for the application, and for that
+          AppSpider is a good tool, which provides comprehensive security
+          testing for web and mobile applications. After that, it goes to the
+          container security step, where the container is scanned for any
+          vulnerabilities — Aqua Security is one of the tools I've used, which
+          worked well. We can also, if we're using infrastructure as code, use
+          Terrascan, which is a code scanner for infrastructure as code. For
+          secrets management within the application, we'd use AWS Secrets
+          Manager, or, if it's open-source, we can use Doppler as well — or if
+          you want to go with the HashiCorp world, then Vault also works well.
+          And for the CI/CD tool, we can use Jenkins, GitLab CI, CircleCI, or
+          Octopus Deploy — whichever serves the purpose well — but Jenkins is
+          open-source, so if you just want to get started it's a good tool with
+          a lot of features. For runtime security and monitoring, Sysdig is one
+          of the best tools I've used. And for cloud security, Prisma Cloud
+          works well. So these are some of the tools I'd go with.
+
+Aditya: Okay, and what would be your deployment tool? You forgot to mention the
+         deployment tool. So if it's an EKS-based application, how would you
+         deploy your Docker image onto the EKS cluster?
+
+Prateek: Yeah, so if it's an EKS-based image, I'd go with Argo CD, which is
+          perfect for EKS clusters.
+
+Aditya: Okay. Yeah, thank you so much, Prateek, for your time for this
+         interview. I really appreciate it. Thank you so much.
+
+Prateek: Thanks, Aditya, for your time. Thank you.

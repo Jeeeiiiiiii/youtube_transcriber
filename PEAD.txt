@@ -1,0 +1,295 @@
+Hello gentlemen, my name is Matto Conti.
+I've been a market maker for seven years, making more than 30 million euro for a large
+investment bank.
+And now I run my own edge fund, where I automate every single one of my trading strategies.
+On the side, I'm trying to kick off this YouTube channel as part of a bigger project,
+properly educating retail traders beyond the misinformation you find online.
+So I would really appreciate if you follow along and drop around more in the comments
+like strategy to make both me and the YouTube algorithm very happy.
+Let's ride!
+Today I want to talk about one of the first edges I've ever learned about.
+It's called PID, Post Earnings Announcement Drift.
+This is one of the most documented market inefficiencies in finance history.
+Institutional traders have been making quietly billions of dollars off this phenomenon since
+the 1980s.
+And the reason why most retail traders ignore it, it is simply they have never been told
+it exists.
+First, I'm going to explain you what the PID actually is and what you threw the academic
+research behind it.
+Second, I'm going to show you how anyone with access to the research and the right tools
+can take that body of work and extract a simple working trading strategy.
+So what is the PID?
+PID stands for Post Earnings Announcement Drift.
+It is a market inefficiency where stock prices continue to drift in the direction of the
+earnings surprise for several weeks after the earnings announcement.
+In plain English, if a company beats earnings, the stock tends to keep going up for the following
+weeks.
+If a company misses earnings, the stock tends to keep going down.
+The price reaction doesn't stop at the moment of the announcement, but it bleeds into the
+following sessions.
+And this might sound obvious, but it shouldn't happen if the markets were truly efficient.
+The efficient market hypothesis which has dominated the financial literature says that
+all the public information should be reflected into the price immediately.
+PID violates this assumption directly.
+The earning number is public, the surprise is measurable and yet the price keeps moving
+in the same direction for weeks.
+That is the definition of a market inefficiency that you can exploit.
+And the post earning announcement drift is probably the most studied anomaly in the entire
+academic finance literature.
+The first paper where the post earnings announcement drift was introduced was in 1968.
+The paper was an empirical evaluation of accounting income numbers by Boll and Brown.
+They were the first one to document that the stock market doesn't fully react to earnings
+on the day where they are announced and their chart of cumulative abnormal returns for good
+news versus bad news became the foundational image of the entire literature.
+In 1989 Bernard and Thomas came out with the paper post earnings announcement drift, delayed
+price response or risk premium, where they formalized the methodology by sorting stocks
+into the sales based on earnings surprise, showing that the top minus bottom spread generated
+positive abnormal returns in 41 out of 48 quarters, with the average drift lasting for
+about 60 days.
+And this was the paper that turned PID into an institutional trading strategy.
+Livnell and Mendenall in 2006, with comparing the PID for surprises calculated on analysts
+and time series forecasts, wrote the methodology into the modern era.
+Comparing analysts consensus forecasts to time series forecasts, defining the standard
+entry and exit windows still used today.
+Lastly, Fink in 2021 made a comprehensive review of over 200 papers across 50 years of
+PID research.
+The headline, the effect persist globally.
+Four papers, 53 years.
+Discovered in 1968, formalized in 1989, modernized in 2006 and confirmed in 2021.
+Most anomalies like this one get easily arbitrage away within years from their publication.
+The post earnings announcement drift has stubbornly refused to disappear.
+And naturally comes to question, why does this still exist?
+And the answer is mostly about investors under reaction.
+When a company reports earnings, especially a surprising one, the news is processed gradually
+across market participants.
+Retail investors update their models and adjust positions over weeks, not minutes like you
+might expect.
+Sales side analysts revise their estimates over the following days.
+Retail investors mostly just look at the headline number and react emotionally.
+And all of this creates a slow stream of buying and selling pressure that pushes the price
+in the direction of the surprise for an extensive period of time.
+There are also structural limits to this arbitrage.
+Large funds cannot take massive single name positions on every single earnings event without
+taking on too much idiosyncratic risk.
+Transaction costs eat part of the edge.
+Risk managers might have cap on exposure.
+And all of these frictions are real.
+And they explain why this anomaly is still around today.
+Now that we understand what the P.D. is, we know which are the most famous papers around
+it.
+Let's extract a trading strategy from the very same research.
+A complete trading strategy needs three things, an entry condition, an exit condition and
+position sizing.
+For the entry conditions, the literature tells us to use both earnings surprise and the price
+reaction.
+The earnings surprise tells us the fundamental news.
+The price reaction confirms how the market interprets it.
+And when both the surprise and the price direction agree, we call it a concordant signal.
+And our entry rule is straightforward.
+If a company reports earnings above the consensus and the stock reacts positively, we go long.
+If a company reports earnings below consensus and the stock reacts negatively, we go short.
+If the surprise and the reaction disagree, we don't trade.
+Now one thing we need to consider is the timing, because company can report after market closes
+or before market opens.
+For the after market close announcement, the reaction day is the next trading day.
+Because the news only becomes effective when the market opens.
+For before market's open announcements, the reaction day is going to be the same day.
+Because the market opens with the news already public.
+In both cases, we enter at the open of the following session, after the full reaction
+has been played out.
+As exit condition, Bernard and Thomas show that the drift lasts for around 60 trading
+days.
+So, we use a simple time-based exit.
+Hold the position for 60 trading days to which at the end we will close it.
+Meaning no stop-loss, no tech profit in our basic version.
+And that's because the drift is statistical.
+It is not just directional.
+When putting a tight stop-loss on a 60 days hold would cut our winners systematically.
+And finally position sizing, we start simple with a fixed percentage of capital per trade.
+And we are going to go for 10% per position and we will run it on a $100,000 account.
+In this way, we won't take any insane single stock exposure.
+And that's the full strategy.
+Three rules, no discretion, no optimization, pure mechanical execution of what 60 years
+of academic research suggest should work.
+And let me stress it again.
+All we did was taking public research and extracting the elements for our trading strategy.
+On an edge that has been known for more than half a century.
+We are literally not reinventing anything here.
+Just leveraging the work of people which most likely are much smarter than the two of us.
+And now what is left to do is the practical side.
+Gathering the data, getting the code and testing the strategy.
+To develop the strategy we need two things.
+Price data, and I will use daily data from TraceStation directly in multi-charts.
+And earnings data, which is the tricky part.
+For earnings data you need four main columns.
+Announcement date, announcement timing flag, if it's before market open or after market
+close, the actual earning pressure, and the consensus estimate before the announcement.
+And the surprise is simply the difference between the reported and the estimate.
+And there is many providers you could pay and get all this data from.
+But here my challenge is proving you can do all of this minimizing the cost of your infrastructure.
+So we will gather all these earnings data 100% for free.
+One good source is DAX.com which gives you all the earnings estimates and surprises for
+individual stocks, including the timing flag.
+And that's the data that I'm going to use.
+Obviously there is the risk that the data quality is not as good as paid providers.
+But this will do for this example.
+If you just want to be effective without spending a cent, all you need to do is enter in the
+symbol of the stock you are interested in, copy the data and paste them into your Excel.
+And you can bring a data set with all the earnings events for the stocks you are interested
+in.
+The question is which stocks should we use for this back test?
+For this test I picked 20 US stocks spanning across multiple sectors, tech, consumers,
+financial, health care, industrial and energy.
+Why these 20 stocks specifically?
+I deliberately mixed sectors so we are not just testing on tech stocks.
+I included some stocks which struggled over the past eight years, like Nike, Starbucks
+and Lilly, to avoid that the result is going to be just go long stuff that went up.
+But there is a selection bias here.
+That's however, if the strategy works, it is likely it will play to our advantage.
+All of these stocks are large surviving and well followed companies.
+The post earnings announcement drift is known to work better on smaller, less followed stocks
+where information uncertainty is higher and where there are fewer professional eyes watching
+the earnings.
+Meaning that testing on these large 20 stocks put this strategy in its hardest difficulty
+setting.
+If this strategy works here, it should work even better on a broader universe of small
+and mid caps.
+I got the earnings data for all these stocks from January 2018 to April 2026, which give
+us 658 earnings events across 20 stocks over the past eight years.
+With the strategy defined and the data collected, we now move to code.
+And as I mentioned in my previous videos, now you have access to large language models.
+Use them.
+Clearly explain the strategy that you are investigating and if you have them, which
+are the rules that you want to follow.
+And if you want to do it quick and dirty, you can even load the data set to charge
+you P.T. or Claude for specific data like the earnings events, asking to hard code those
+data into the script.
+And this is exactly what I did for this example.
+In mind, this is not the most efficient and clean way, but these allow you to be effective,
+especially in a setting where you are researching.
+Doing like this just in minutes, I got a fully working code with the full strategy fitting
+in just one script, with our entry, exit and position sizing properly encoded.
+Now that we have the code, let's apply it to just one stock.
+And I'm going to take Google as an example.
+And note that I'm going to use exactly the default settings that we specified from the
+research.
+We open a long position.
+If there is a positive surprise in the earnings and on the day of the earnings, the stock
+moves up.
+Equally, we open a short position.
+If there is a negative surprise and the stock moves down, we will hold that position for
+the following 60 trading days.
+No stop losses, no tech profits, just like we got it from the insides of the papers.
+Let's apply to Google.
+And as you can see, trades starts populating.
+To do a very quick cross-reference, I open TradingView as well, where for example, we
+had a positive surprise on the 23rd of July 2025.
+And the closing price of the following day is above the closing price of the day where
+the earnings have been released, meaning that there is a positive reaction in the price.
+If these holds, we should have opened a position into our multi charts.
+And indeed, we did open a long position as the earnings has been released.
+There has been the price reaction, which from close to close, the price has been increasing.
+We had a positive surprise.
+So at the opening of the following trading session, we did open a long position, which
+we held for the following 60 days.
+Or if you want to use your own data to cross-check, here on the 2nd of February 2023, we should
+have for Google an earnings release.
+So 2nd of February 2023, we have a miss on the earnings, so a negative surprise.
+And the price reaction, it is negative because from close to close, the price decreased.
+So at the opening of the following session, we did open a short position.
+And given the fact that the logics for both the long and the short trades holds, we can
+apply the strategy to all 20 stocks simultaneously.
+And if the post-earnings announcement drift is real, we should see a positive and a pricing
+equity curve.
+Let's run the first back test.
+Look at this, the equity curve is not perfect, but we do have the results that we're looking
+for.
+We have a profit for $131,000 on a $100,000 capital, with a 17.4% max portfolio drew down,
+a profit factor of 1.99%, a 61% win rate, and an annualized result of around 12%.
+If we have a look at the Kalmar ratio, which is given by the annual return divided by the
+maximum portfolio drew down, it lands around 0.68%.
+And all of these tell us that this is real.
+We do have a working strategy at the first try, with parameters straight out of academic
+research.
+No optimization, no cool fitting, just the rules as published.
+Applied to a basket of US liquid stocks, giving us this alone a very meaningful result.
+And now let's have a look if we start tweaking the parameters.
+Let's investigate a second configuration.
+Let's use exactly the same as configuration one, but without the concordant filter.
+Meaning that if we have a positive surprise, we go long.
+If we have a negative surprise, we go short.
+But we don't care about what is going to be the following day price reaction.
+And let's run the back test.
+Here we get a net profit of $251,000, with a 32.5% draw down.
+Almost doubled the return, but almost doubled the draw down as well.
+Giving us a Kalmar ratio of 0.69.
+Let's run a configuration number three.
+With concordant filters still off, we don't care if the surprise and the price reaction
+match in direction.
+But we filter out small surprises below 5%.
+And the idea is to focus on high magnitude earnings surprise event.
+The result is a net profit of $191,000, a 26% draw down, giving us a Kalmar ratio of
+0.67.
+Configuration number four, both filters are on, meaning concordant filter plus a 5% threshold.
+And here we get something interesting.
+A net profit of almost $82,000, and a max portfolio draw down of 20%.
+Showing us that the Kalmar ratio dropped to 0.36.
+So stacking the two filters actually broke this strategy.
+And this is the most educational moment of this entire research.
+Because it's telling us that these two filters are doing partially overlapping work.
+And combining them removes a small but high quality signal that were carrying the strategy.
+And this is a real finding.
+Research papers often suggest multiple filters, but they rarely test them together.
+And just as we have seen here, the interaction can have a negative result.
+You can only see these running these exact type of tests.
+Now look at something interesting as well.
+Every time that we run a big test, our short legs are always negative, between minus 14
+and minus $19,000.
+And this is not a bug.
+This is a real market asymmetry that the modern pedilicharchure documents clearly.
+In the post-2010 era, positive surprises drift more reliably than negative ones, especially
+on large cap stocks.
+Companies often pre-announce bad news.
+That guides expectations during the earnings calls.
+Activists highly short companies before the earnings is out.
+And by the time the formal release of the earnings is out, most of the negative reaction
+is already priced in.
+And this inside brings us to remove the short leg completely, running condition 5 as long
+only.
+Concordant filters still on without any threshold, because we have seen that it's not adding
+any value.
+We get a net profit of $146,000, a 20% max portfolio drawdown, a profit factor of $2.68,
+a win rate of 63%, giving us the cleanest by the book version we have produced.
+What this proves, the post-earnings announcement drift, as documented in academia from 1968
+to 2021, still works on a diversified basket of large US stocks.
+The edge is modest, but it is real, with a calmer ratio between 0.66 to 0.76, depending
+on the configuration that you want to use.
+And what matters is that this is just the starting point.
+From here you can extend this strategy in several directions.
+You can test the post-earnings announcement drift on less liquid stocks, given the fact
+that the literature strongly suggests that this effect is stronger on small caps, mid
+caps and stocks with less analyst coverage.
+You can test it on stocks based on other countries, like in Europe or Asia.
+Or again, you can combine the PID with other signals.
+And of course, as I said before, there is more sophisticated ways of doing this.
+You can use Python for proper cross-sectional analysis, doing a much more in-depth analysis
+of this phenomenon.
+But what is relevant here, and what I want you to understand, is that if you knew the
+process and you followed the proper protocol, we're just using tools that you have access
+to.
+Without knowing how to code a single line, you would have been able to reproduce this
+exact research, and you would be able to leave all the old retail trading methodologies you're
+relying on today.
+We took a phenomenon documented in academic research.
+We extracted the rules for a simple trading strategy.
+We sourced free data.
+We coded the strategy using tools that any single one of you has access to.
+We tested it on 20 stocks simultaneously, over 8 years of data.
+And we found the confirmation for a real, positive, risk-adjusted edge.
+And this is what I mean when I say that anyone can do this today.
+But still, you need to know what you're looking for, where to find it, and how to ask the
+right questions.
+That, by definition, is the institutional protocol.
+And that's what this channel is about.
+If you found this interesting and useful, please drop a comment, subscribe to the channel,
+because we're just getting started.

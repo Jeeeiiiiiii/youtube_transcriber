@@ -1,0 +1,5 @@
+youtube-transcript-api
+yt-dlp
+openai-whisper
+gdown
+requests

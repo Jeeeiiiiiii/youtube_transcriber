@@ -1,0 +1,268 @@
+1
+00:00:00,000 --> 00:00:06,900
+So MarkerMaker models are just some people call them like V-shape recoveries and they
+
+2
+00:00:06,900 --> 00:00:12,460
+really come down to do we tap into something significant where we can reverse and take
+
+3
+00:00:12,460 --> 00:00:14,980
+out the opposing side.
+
+4
+00:00:14,980 --> 00:00:20,380
+If yes, and obviously the opposing side should have a decent target.
+
+5
+00:00:20,380 --> 00:00:27,660
+In this case on NQ, we do have relative equal highs on higher time frame.
+
+6
+00:00:27,660 --> 00:00:33,060
+That's why I said I want this to be a MarkerMaker buy model and we tap into this daily rejection
+
+7
+00:00:33,060 --> 00:00:34,060
+block.
+
+8
+00:00:34,060 --> 00:00:35,060
+Sorry.
+
+9
+00:00:35,060 --> 00:00:36,060
+What is?
+
+10
+00:00:36,060 --> 00:00:40,180
+Wait, I think I changed my settings.
+
+11
+00:00:40,180 --> 00:00:45,260
+This is a daily rejection block when I had the BADJ on.
+
+12
+00:00:45,260 --> 00:01:00,100
+Yeah, going, now it's on, you have it off, you have it off, okay, gotcha.
+
+13
+00:01:00,100 --> 00:01:04,700
+But yeah, going to the four hour we can clearly see there is a cell side curve here with
+
+14
+00:01:04,700 --> 00:01:08,700
+these consolidations on the way down, right?
+
+15
+00:01:08,700 --> 00:01:18,060
+As soon as we start coming back above the most recent consolidation, accumulation on
+
+16
+00:01:18,060 --> 00:01:23,020
+the cell side curve, this is for a buy model specifically, when we start closing above
+
+17
+00:01:23,020 --> 00:01:25,540
+this, right?
+
+18
+00:01:25,540 --> 00:01:33,360
+I want us to deliver up here because this essentially on this higher time frame is a market
+
+19
+00:01:33,360 --> 00:01:34,360
+structure shift.
+
+20
+00:01:35,360 --> 00:01:38,720
+And use for entries, this is just for my bias, okay?
+
+21
+00:01:38,720 --> 00:01:45,520
+So when I see this, and it is looking likely that we can come back to this liquidity pool
+
+22
+00:01:45,520 --> 00:01:46,520
+up here, right?
+
+23
+00:01:46,520 --> 00:01:50,560
+I have a pretty strong target, I have a pretty strong reversal point.
+
+24
+00:01:50,560 --> 00:01:58,000
+And we start closing in my favor, I want to look for entries in that direction, right?
+
+25
+00:01:58,000 --> 00:02:03,240
+And essentially, when I say I want to follow the higher time frame, this is what I mean.
+
+26
+00:02:03,240 --> 00:02:09,000
+I want to follow the higher time frame in terms of following this buy model.
+
+27
+00:02:09,000 --> 00:02:15,960
+And then I want to, sorry, I want to fade the short term trend, right?
+
+28
+00:02:15,960 --> 00:02:22,160
+So at market open tomorrow, this tomorrow, the brain is cooked.
+
+29
+00:02:22,160 --> 00:02:29,440
+Yesterday, I said I will bullish, wanted that to be a market maker buy model.
+
+30
+00:02:29,440 --> 00:02:37,880
+We get a pretty significant Judas down, sweep out the pre-market lows.
+
+31
+00:02:37,880 --> 00:02:42,520
+And then we come straight back, right?
+
+32
+00:02:42,520 --> 00:02:49,200
+And then as I said in the group, I said, I think open is going to move.
+
+33
+00:02:49,200 --> 00:02:51,600
+And then we're going to deliver.
+
+34
+00:02:51,600 --> 00:02:58,400
+And we're going to chop rest of the day because tomorrow, if Fp, it has an 11 minutes towards
+
+35
+00:02:58,400 --> 00:02:59,400
+Fp.
+
+36
+00:02:59,400 --> 00:03:00,400
+And that is exactly what happened.
+
+37
+00:03:00,400 --> 00:03:06,360
+We got this ugly move, chopping down, back up, chopping down, right?
+
+38
+00:03:06,360 --> 00:03:10,000
+Pretty easy read in my opinion.
+
+39
+00:03:10,000 --> 00:03:13,960
+That's what market maker models are, don't over complicate them.
+
+40
+00:03:13,960 --> 00:03:17,040
+You need a strong reversal point, you need a strong target.
+
+41
+00:03:17,040 --> 00:03:22,600
+And then you just need to be able to identify, right, this V shape.
+
+42
+00:03:22,600 --> 00:03:26,320
+If it's the opposite, it's going to be an A shape, right?
+
+43
+00:03:26,320 --> 00:03:34,560
+Like this, for example, in this range, there are like too many market maker models to
+
+44
+00:03:34,560 --> 00:03:35,560
+be honest.
+
+45
+00:03:35,560 --> 00:03:37,360
+Like every single, yeah.
+
+46
+00:03:37,360 --> 00:03:44,360
+But that's essentially how I would probably explain it in simple terms.
+
+47
+00:03:44,360 --> 00:03:46,960
+And I got pretty good terms.
+
+48
+00:03:46,960 --> 00:03:48,720
+You can use this as any time frame.
+
+49
+00:03:48,720 --> 00:03:50,440
+This is obviously four hour.
+
+50
+00:03:50,440 --> 00:03:55,600
+If you want to catch a good entry with precision and all this, you can catch them on one minute,
+
+51
+00:03:55,600 --> 00:04:00,480
+five minute, 15 minute, whatever you want.
+
+52
+00:04:00,480 --> 00:04:06,520
+And then we all obviously have this like hierarchy of PD arrays where rejection block is the
+
+53
+00:04:06,520 --> 00:04:07,520
+most discounted one.
+
+54
+00:04:07,520 --> 00:04:14,200
+And we can see this down here on this four hour rejection block gets tapped, right?
+
+55
+00:04:14,200 --> 00:04:16,200
+That is the first area that gets formed.
+
+56
+00:04:16,200 --> 00:04:21,200
+And then we can see this four hour change instead of delivery or CISD.
+
+57
+00:04:21,200 --> 00:04:25,080
+This gets formed and tapped into, right?
+
+58
+00:04:25,080 --> 00:04:29,120
+And then we have a fair value gap, which gets formed.
+
+59
+00:04:29,120 --> 00:04:35,560
+That's on this by side leg, the by side of the curve.
+
+60
+00:04:35,560 --> 00:04:39,800
+And then we start forming inverse for value gaps.
+
+61
+00:04:39,800 --> 00:04:43,160
+And then we form breakers, right?
+
+62
+00:04:43,160 --> 00:04:49,360
+So these are all like the hierarchy of the PD arrays.
+
+63
+00:04:49,360 --> 00:04:56,920
+Next box, the most discounted ones, CISDs are the second most discounted ones, at least
+
+64
+00:04:56,920 --> 00:04:59,200
+most of the time they are.
+
+65
+00:04:59,200 --> 00:05:02,040
+This should be there's almost no way there aren't.
+
+66
+00:05:02,040 --> 00:05:07,920
+And then you got like IFEGs and then breakers, usually.
+
+67
+00:05:07,920 --> 00:05:14,600
+So that pretty much covers it, I think, yeah.
+

@@ -1,0 +1,16 @@
+# Generated video output
+captioned_videos/
+captioned_videos_2/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Secrets / creds
+.env
+.env.*
+client_secret*.json
+token.json
+*.pem
