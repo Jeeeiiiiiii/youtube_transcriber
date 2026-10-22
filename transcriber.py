@@ -81,16 +81,34 @@ def fetch_captions(video_id: str, language: str = 'en') -> list:
     return segments
 
 
-def transcribe_with_whisper(url: str, model_size: str = 'base') -> list:
-    """Download audio and transcribe with OpenAI Whisper."""
-    try:
-        import whisper
-    except ImportError:
-        print("Error: Whisper is not installed.")
-        print("Install with: pip install openai-whisper")
-        print("You also need ffmpeg installed on your system.")
-        sys.exit(1)
+def is_youtube_url(url: str) -> bool:
+    """True if the URL/ID looks like YouTube (vs any other video page)."""
+    if re.search(r'(youtube\.com|youtu\.be)', url, re.IGNORECASE):
+        return True
+    # A bare 11-char video ID with no scheme/host is treated as YouTube.
+    return bool(re.match(r'^[A-Za-z0-9_-]{11}$', url))
 
+
+def ffmpeg_location():
+    """Path to an ffmpeg binary: system ffmpeg if on PATH, else imageio-ffmpeg's."""
+    import shutil
+    if shutil.which('ffmpeg'):
+        return None  # yt-dlp finds it on its own
+    try:
+        import imageio_ffmpeg
+        return imageio_ffmpeg.get_ffmpeg_exe()
+    except ImportError:
+        return None
+
+
+def download_audio(url: str, dest_dir: str, referer: str = None) -> str:
+    """Download a URL's audio with yt-dlp into dest_dir and return its path.
+
+    Works for YouTube and any site yt-dlp supports (e.g. Bunny Stream embeds,
+    which need the embedding site as --referer). Audio-only formats are
+    preferred; for HLS sources that only offer muxed streams, the smallest
+    stream is taken since only the audio matters for transcription.
+    """
     try:
         import yt_dlp
     except ImportError:
@@ -98,46 +116,84 @@ def transcribe_with_whisper(url: str, model_size: str = 'base') -> list:
         print("Install with: pip install yt-dlp")
         sys.exit(1)
 
+    print("  Downloading audio...")
+    ydl_opts = {
+        'format': 'bestaudio/worst[acodec!=none]/worst',
+        'outtmpl': os.path.join(dest_dir, 'audio.%(ext)s'),
+        'quiet': True,
+        'no_warnings': True,
+        'noprogress': True,
+    }
+    if referer:
+        ydl_opts['http_headers'] = {'Referer': referer}
+    ffmpeg = ffmpeg_location()
+    if ffmpeg:
+        ydl_opts['ffmpeg_location'] = ffmpeg
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([url])
+
+    files = [f for f in os.listdir(dest_dir)
+             if f.startswith('audio.') and not f.endswith('.part')]
+    if not files:
+        raise RuntimeError("Failed to download audio")
+    return os.path.join(dest_dir, files[0])
+
+
+# Loaded Whisper models, keyed by (backend, size), so batch runs load once.
+_MODELS = {}
+
+
+def transcribe_audio_file(media_path: str, model_size: str = 'base',
+                          language: str = None) -> list:
+    """Transcribe a local audio/video file.
+
+    Uses faster-whisper when installed (several times faster on CPU), and
+    falls back to OpenAI Whisper otherwise.
+    """
+    try:
+        from faster_whisper import WhisperModel
+    except ImportError:
+        WhisperModel = None
+
+    if WhisperModel is not None:
+        key = ('faster', model_size)
+        if key not in _MODELS:
+            print(f"  Loading faster-whisper model ({model_size})...")
+            name = 'large-v3' if model_size == 'large' else model_size
+            _MODELS[key] = WhisperModel(name, device='auto', compute_type='int8')
+        print("  Transcribing (this may take a while)...")
+        # vad_filter is left off: its onnxruntime VAD segfaults on some
+        # Windows machines.
+        raw, _info = _MODELS[key].transcribe(media_path, language=language)
+        return [{'text': s.text.strip(), 'start': s.start,
+                 'duration': s.end - s.start} for s in raw]
+
+    try:
+        import whisper
+    except ImportError:
+        print("Error: no Whisper backend is installed.")
+        print("Install with: pip install faster-whisper  (or openai-whisper + ffmpeg)")
+        sys.exit(1)
+
+    key = ('openai', model_size)
+    if key not in _MODELS:
+        print(f"  Loading Whisper model ({model_size})...")
+        _MODELS[key] = whisper.load_model(model_size)
+    print("  Transcribing (this may take a while)...")
+    result = _MODELS[key].transcribe(media_path, language=language)
+    return [{'text': s['text'].strip(), 'start': s['start'],
+             'duration': s['end'] - s['start']} for s in result['segments']]
+
+
+def transcribe_with_whisper(url: str, model_size: str = 'base',
+                            referer: str = None, language: str = None) -> list:
+    """Download a URL's audio and transcribe it with Whisper."""
     import tempfile
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        print("  Downloading audio...")
-        ydl_opts = {
-            'format': 'bestaudio/best',
-            'outtmpl': os.path.join(tmpdir, 'audio.%(ext)s'),
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }],
-            'quiet': True,
-            'no_warnings': True,
-        }
-
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([url])
-
-        audio_files = [f for f in os.listdir(tmpdir)
-                       if f.endswith(('.mp3', '.m4a', '.wav', '.webm', '.opus'))]
-        if not audio_files:
-            raise RuntimeError("Failed to download audio")
-        audio_path = os.path.join(tmpdir, audio_files[0])
-
-        print(f"  Loading Whisper model ({model_size})...")
-        model = whisper.load_model(model_size)
-
-        print("  Transcribing (this may take a while)...")
-        result = model.transcribe(audio_path)
-
-    segments = []
-    for seg in result['segments']:
-        segments.append({
-            'text': seg['text'].strip(),
-            'start': seg['start'],
-            'duration': seg['end'] - seg['start'],
-        })
-
-    return segments
+        audio_path = download_audio(url, tmpdir, referer=referer)
+        return transcribe_audio_file(audio_path, model_size, language)
 
 
 def format_transcript(segments: list, timestamps: bool = True) -> str:
@@ -157,7 +213,8 @@ def main():
     parser = argparse.ArgumentParser(
         description='Extract transcripts from YouTube videos'
     )
-    parser.add_argument('url', help='YouTube video URL or video ID')
+    parser.add_argument('url', help='YouTube video URL/ID, or any video URL '
+                                    'yt-dlp supports (transcribed with Whisper)')
     parser.add_argument(
         '-m', '--method',
         choices=['auto', 'captions', 'whisper'],
@@ -184,21 +241,30 @@ def main():
         '-o', '--output',
         help='Save transcript to a file instead of printing'
     )
+    parser.add_argument(
+        '--referer',
+        help='Referer header for the download, e.g. the site a video is '
+             'embedded on (needed for Bunny Stream embeds)'
+    )
 
     args = parser.parse_args()
 
-    try:
-        video_id = get_video_id(args.url)
-    except ValueError as e:
-        print(f"Error: {e}")
-        sys.exit(1)
-
-    print(f"Video ID: {video_id}")
-
+    youtube = is_youtube_url(args.url)
     segments = None
 
+    if youtube:
+        try:
+            video_id = get_video_id(args.url)
+        except ValueError as e:
+            print(f"Error: {e}")
+            sys.exit(1)
+        print(f"Video ID: {video_id}")
+    elif args.method == 'captions':
+        print("Error: captions are only available for YouTube videos")
+        sys.exit(1)
+
     # Try captions first (unless whisper is explicitly requested)
-    if args.method in ('auto', 'captions'):
+    if youtube and args.method in ('auto', 'captions'):
         try:
             print("Fetching YouTube captions...")
             segments = fetch_captions(video_id, args.language)
@@ -213,7 +279,9 @@ def main():
     if segments is None or args.method == 'whisper':
         print(f"Transcribing with Whisper ({args.model} model)...")
         try:
-            segments = transcribe_with_whisper(args.url, args.model)
+            segments = transcribe_with_whisper(args.url, args.model,
+                                               referer=args.referer,
+                                               language=args.language)
             print(f"  Transcribed {len(segments)} segments")
         except Exception as e:
             print(f"Error during transcription: {e}")

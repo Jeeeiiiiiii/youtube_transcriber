@@ -1,5 +1,12 @@
 youtube-transcript-api
 yt-dlp
 openai-whisper
+faster-whisper
+# ctranslate2 4.8.x segfaults on load on some newer Intel CPUs; 4.4.0 needs pkg_resources
+ctranslate2==4.4.0
+setuptools<80
+# faster-whisper passes metadata_errors to av.open(), removed in PyAV 15
+av<15
+imageio-ffmpeg
 gdown
 requests

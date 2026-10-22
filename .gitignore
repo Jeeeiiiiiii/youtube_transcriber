@@ -20,3 +20,6 @@ tiktok_sample.mp4
 transcript.txt
 transcript[0-9].txt
 transcripts/
+
+# Batch manifests (private video links)
+manifests/
